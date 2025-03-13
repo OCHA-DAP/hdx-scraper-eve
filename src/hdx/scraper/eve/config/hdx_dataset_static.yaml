@@ -1,0 +1,17 @@
+license_id: cc-by
+methodology: methodology here
+caveats: None
+dataset_source: Food and Agriculture Organization (FAO)
+package_creator: HDX Data Systems Team
+private: False
+maintainer: 169c44fe-3043-4616-8719-59cf9f101270 # andreampa
+owner_org:  ed727a5b-3e6e-4cd6-b97e-4a71532085e6 # fao
+data_update_frequency: 14
+notes: |
+  The DIEM Events Visualization in Emergencies (EVE) system provides resources to enhance the understanding of flood events and their impact on different land cover types, with a particular focus on agricultural areas.
+
+  EVE utilizes satellite-derived data from the NOAA Visible Infrared Imaging Radiometer Suite (VIIRS) at a 375-meter resolution, alongside land cover data from the European Space Agency’s WorldCover 10m 2021 dataset. Covering approximately 40 countries, the system offers daily and biweekly insights, providing a continuously updated view of flood dynamics and their effects.
+
+  The platform presents results through interactive maps, charts, and tables, supporting decision-making in disaster management, agricultural planning, and environmental monitoring. Most resources are publicly accessible, though downloading aggregated data at the admin2 level requires a [DIEM account](https://hqfao.maps.arcgis.com/sharing/rest/oauth2/signup?client_id=aEXLMtXxljlIrgPN&response_type=token&expiration=20160&showSocialLogins=true&locale=en-us&redirect_uri=https%3A%2F%2Fdata-in-emergencies.fao.org%2Ftorii-provider-arcgis%2Fhub-redirect.html).
+
+  EVE products are preliminary analyses and have not yet undergone field validation. Users are encouraged to provide ground feedback to the [FAO Data in Emergencies (DIEM) team](https://data-in-emergencies.fao.org/pages/contactus) to enhance the accuracy and utility of the data.
