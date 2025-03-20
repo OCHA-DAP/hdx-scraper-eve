@@ -14,8 +14,7 @@ requires-python = ">=3.12"
 dependencies = [
   "hdx-python-api",
   "hdx-python-utilities",
-  "arcgis",
-  "gssapi"
+  "arcgis"
 ]
 
 dynamic = ["version"]
