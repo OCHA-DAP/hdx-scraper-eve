@@ -1,11 +1,10 @@
 #!/usr/bin/python
 """eve scraper"""
 
-import json
 import logging
 import os
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 
 from arcgis.gis import GIS
@@ -28,41 +27,25 @@ if not USERNAME or not PASS:
     logger.error("DIEM_USERNAME or DIEM_PASSWORD environment variables are missing.")
 
 # Query settings
-# Set to desired period number, None for all periods, or "latest" for the most recent available
-PERIOD_NUMBER = "latest"
+PERIOD_NUMBER = None  # "latest"
 FILE_FORMAT = "CSV"
+START_YEAR = 2024
 
 
 class Eve:
-    def __init__(
-        self, configuration: Configuration, retriever: Retrieve, temp_dir: str, use_saved: bool
-    ):
+    def __init__(self, configuration: Configuration, retriever: Retrieve, temp_dir: str):
         self._configuration = configuration
         self._retriever = retriever
         self._temp_dir = temp_dir
-        self._use_saved = use_saved
-
-    def get_locations(self, country_name: str) -> dict:
-        """
-        Get location by fuzzy matching the country name.
-        """
-        iso3 = Country.get_iso3_country_code_fuzzy(country_name)
-
-        if iso3[0] is None:
-            logger.error("Could not match country", country_name)
-            return {}
-        location_name = Country.get_country_name_from_iso3(iso3[0])
-        return {"code": iso3[0], "name": location_name}
 
     def calculate_current_period(self) -> int:
         """
-        Calculate the current period based on the current date.
-        Each year has 24 periods (2 per month).
+        Calculate the latest period number dynamically
+        https://github.com/Andrampa/DIEM_API/blob/main/DIEM_API_get_EVE_data.ipynb
         """
-        # Calculate the latest period number dynamically
         # Get the current date and time
         current_datetime = datetime.now()
-        start_year = 2024  # make this dynamic?
+        start_year = START_YEAR
         current_year = current_datetime.year
         current_month = current_datetime.month
 
@@ -79,7 +62,8 @@ class Eve:
 
     def get_arcgis_data(self) -> List:
         """
-        Connect to ArcGIS, query the feature layer, and return the data.
+        Connect to ArcGIS to query the feature layer
+        https://github.com/Andrampa/DIEM_API/blob/main/DIEM_API_get_EVE_data.ipynb
         """
         config = self._configuration
         where_clauses = []
@@ -130,54 +114,93 @@ class Eve:
         results_list = [feature.attributes for feature in result.features]
         return results_list
 
-    def get_data(self) -> List:
-        """
-        Retrieve data either from a saved JSON file or from ArcGIS.
-        """
-        if self._use_saved:
-            try:
-                with open("saved_data/data-latest.json", "r") as file:
-                    json_data = json.load(file)
-                    return [feature["attributes"] for feature in json_data["features"]]
-            except FileNotFoundError:
-                logger.error("Saved data file not found.")
-                return []
-        else:
-            return self.get_arcgis_data()
-
     def get_country_list(self, data: List) -> List[str]:
         """
         Get a unique list of country names from the data.
         """
         country_set = {item["adm0_name"] for item in data}
-        return list(country_set)
+        return sorted(country_set)
 
-    def parse_dates(sslf, record: dict) -> (datetime, datetime):
+    def get_locations(self, country_name: str) -> dict:
+        """
+        Get HDX location by fuzzy matching the country name.
+        """
+        iso3 = Country.get_iso3_country_code_fuzzy(country_name)
+
+        if iso3[0] is None:
+            logger.error("Could not match country", country_name)
+            return {}
+        location_name = Country.get_country_name_from_iso3(iso3[0])
+        return {"code": iso3[0], "name": location_name}
+
+    def parse_dates(self, record: dict) -> (datetime, datetime):
         """
         Parse the 'start_date' and 'end_date' from a record.
         """
-        start = datetime.strptime(record["start_date"], "%Y-%m-%d")
-        end = datetime.utcfromtimestamp(record["end_date"] / 1000)
+        start = record["start_date"]  # datetime.strptime(record["start_date"], "%Y-%m-%d").date()
+        end = datetime.fromtimestamp(record["end_date"] / 1000, tz=timezone.utc).strftime(
+            "%Y-%m-%d"
+        )
         return start, end
 
-    def generate_dataset(self, data: List) -> Optional[Dataset]:
+    def reorder_dict(self, d: dict) -> dict:
+        """
+        Reorders dictionary so key "end_date" appears after "start_date".
+        """
+        if "start_date" not in d or "end_date" not in d:
+            return d
+
+        end_date_value = d.pop("end_date")
+
+        new_dict = {}
+        for key, value in d.items():
+            new_dict[key] = value
+            if key == "start_date":
+                new_dict["end_date"] = end_date_value
+
+        return new_dict
+
+    def process_data(self, data: List) -> List:
+        """
+        Process data by filtering out unwanted columns and sorting data
+        """
+        # Filter out unnecessary columns from data
+        filtered_data = []
+        for row in data:
+            filtered_record = {
+                k: v for k, v in row.items() if k not in ("ObjectId", "biweekly_group")
+            }
+            filtered_data.append(filtered_record)
+
+        # Reorder keys in data so start date and end date are together
+        filtered_data = [self.reorder_dict(d) for d in filtered_data]
+
+        # Sort data by descending period number and by country name
+        filtered_data.sort(key=lambda item: (-item["period_number"], item["adm0_name"]))
+        return filtered_data
+
+    def generate_dataset(self) -> Optional[Dataset]:
         """
         Generate dataset from the data.
         """
+        eve_data = self.get_arcgis_data()
+        data = self.process_data(eve_data)
         countries = self.get_country_list(data)
+
         start_dates = []
         end_dates = []
         grouped = defaultdict(list)
         for record in data:
-            # get all start and end dates
+            # Get all start and end dates
             start, end = self.parse_dates(record)
+            record["start_date"] = start
+            record["end_date"] = end
             start_dates.append(start)
             end_dates.append(end)
 
-            # Group records by 'adm0_iso3' while excluding the 'ObjectId' field.
+            # Group records by 'adm0_iso3'
             key = record["adm0_iso3"]
-            filtered_record = {k: v for k, v in record.items() if k != "ObjectId"}
-            grouped[key].append(filtered_record)
+            grouped[key].append(record)
 
         # Create dataset
         dataset_info = self._configuration
@@ -191,12 +214,13 @@ class Eve:
         dataset.set_time_period(min(start_dates), max(end_dates))
 
         # Create global resource
-        resource_name = f"global-{slugify(dataset_info["resource_title"])}.csv"
+        resource_name = f"global-{slugify(dataset_info['resource_title'])}.csv"
         resource_description = dataset_info["description"].replace("(country)", "all countries")
         resource = {
             "name": resource_name,
             "description": resource_description,
         }
+
         dataset.generate_resource_from_iterable(
             headers=list(data[0].keys()),
             iterable=data,
@@ -211,7 +235,7 @@ class Eve:
         for i, (iso3, records) in enumerate(grouped.items()):
             if i == 5:  # for testing
                 break
-            resource_name = f"{iso3.lower()}-{slugify(dataset_info["resource_title"])}.csv"
+            resource_name = f"{iso3.lower()}-{slugify(dataset_info['resource_title'])}.csv"
             resource_description = dataset_info["description"].replace(
                 "(country)", Country.get_country_name_from_iso3(iso3)
             )
@@ -228,5 +252,4 @@ class Eve:
                 resourcedata=resource,
                 quickcharts=None,
             )
-
         return dataset

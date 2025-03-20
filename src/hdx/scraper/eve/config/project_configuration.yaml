@@ -2,14 +2,16 @@
 base_url: "https://hqfao-hub.maps.arcgis.com"
 feature_table_id: "98265cbe82e344f88552d4c2d3615c3c"
 
-description: Latest biweekly insights on flood events and their impacts on various land cover types for (country)
-title: FAO Events Visualization in Emergencies (EVE) system
+description: Biweekly insights on flood events - their impacts on population and various land cover types - for (country) from 1 July 2024 (when available) to date.
+title: FAO Flood Events Visualization in Emergencies (EVE)
 resource_title: Events Visualization in Emergencies
 
 tags:
+  - affected area
+  - affected population
   - climate hazards
   - flooding
-  - environment
+  - hxl
 
 hxl_tags:
   "adm0_iso3": "#country+code"
@@ -21,7 +23,6 @@ hxl_tags:
   "adm2_name": "#adm2+name"
   "period_number": "#period+num"
   "start_date": "#date+start"
-  "biweekly_group": "#date+period"
   "cropland_flooded_sq_km": "#land+flooded+agri+area+km2"
   "cropland_flooded_ha": "#land+flooded+agri+area+ha"
   "total_area_flooded_sq_km": "#land+flooded+area+km2"

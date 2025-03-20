@@ -53,10 +53,8 @@ def main(
             # Steps to generate dataset
             #
             configuration = Configuration.read()
-            eve = Eve(configuration, retriever, temp_dir, use_saved)
-            data = eve.get_data()
-
-            dataset = eve.generate_dataset(data)
+            eve = Eve(configuration, retriever, temp_dir)
+            dataset = eve.generate_dataset()
             dataset.update_from_yaml(
                 path=join(dirname(__file__), "config", "hdx_dataset_static.yaml")
             )
@@ -72,7 +70,7 @@ def main(
 if __name__ == "__main__":
     facade(
         main,
-        hdx_site="stage",
+        hdx_site="demo",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=_USER_AGENT_LOOKUP,
         project_config_yaml=join(dirname(__file__), "config", "project_configuration.yaml"),

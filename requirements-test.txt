@@ -31,7 +31,7 @@ click==8.1.8
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.6.12
+coverage==7.7.0
     # via pytest-cov
 defopt==6.4.0
     # via
@@ -70,7 +70,7 @@ hdx-python-country==3.8.8
     # via
     #   -c requirements.txt
     #   hdx-python-api
-hdx-python-utilities==3.8.4
+hdx-python-utilities==3.8.5
     # via
     #   -c requirements.txt
     #   hdx-scraper-eve (pyproject.toml)
@@ -93,7 +93,7 @@ inflect==7.5.0
     # via
     #   -c requirements.txt
     #   quantulum3
-iniconfig==2.0.0
+iniconfig==2.1.0
     # via pytest
 isodate==0.7.2
     # via
@@ -266,7 +266,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==76.0.0
+setuptools==77.0.3
     # via
     #   -c requirements.txt
     #   ckanapi

@@ -8,7 +8,7 @@ maintainer: 169c44fe-3043-4616-8719-59cf9f101270 # andreampa
 owner_org:  ed727a5b-3e6e-4cd6-b97e-4a71532085e6 # fao
 data_update_frequency: 14
 notes: |
-  The DIEM Events Visualization in Emergencies (EVE) system provides resources to enhance the understanding of flood events and their impact on different land cover types, with a particular focus on agricultural areas.
+  The DIEM Events Visualization in Emergencies (EVE) system provides resources to enhance the understanding of flood events and their impact on different land cover types, with a particular focus on agricultural areas. EVE provides a flood persistence analysis as well as an estimation of the population exposed to such events.
 
   EVE utilizes satellite-derived data from the NOAA Visible Infrared Imaging Radiometer Suite (VIIRS) at a 375-meter resolution, alongside land cover data from the European Space Agency’s WorldCover 10m 2021 dataset. Covering approximately 40 countries, the system offers daily and biweekly insights, providing a continuously updated view of flood dynamics and their effects.
 
