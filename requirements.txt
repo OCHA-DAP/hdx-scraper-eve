@@ -66,6 +66,7 @@ geomet==1.1.0
     # via arcgis
 gssapi==1.9.0
     # via
+    #   hdx-scraper-eve (pyproject.toml)
     #   pyspnego
     #   requests-gssapi
 hdx-python-api==6.3.8
