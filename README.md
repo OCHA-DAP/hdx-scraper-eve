@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-eve/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-eve?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script ...
+This script downloads subsets of the EVE (Events Visualization in Emergencies) feature table hosted on ArcGIS Online (AGOL). It creates 1 dataset with 1 global resource and 1 resource per country in the dataset every 14 days.
 
 ## Development
 
@@ -42,14 +42,6 @@ To install and run, execute:
 
     pip install .
     python -m hdx.scraper.eve
-
-## Environment
-
-Development is currently done using Python 3.11. We recommend using a virtual
-environment such as ``venv``:
-
-    python3.12 -m venv venv
-    source venv/bin/activate
 
 ### Pre-commit
 

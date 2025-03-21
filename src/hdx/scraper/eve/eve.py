@@ -164,20 +164,25 @@ class Eve:
         """
         Process data by filtering out unwanted columns and sorting data
         """
-        # Filter out unnecessary columns from data
-        filtered_data = []
+        processed_data = []
         for row in data:
+            # Filter out unnecessary columns from data
             filtered_record = {
                 k: v for k, v in row.items() if k not in ("ObjectId", "biweekly_group")
             }
-            filtered_data.append(filtered_record)
+
+            # Rename key if it exists
+            if "pop_affected" in filtered_record:
+                filtered_record["pop_exposed"] = filtered_record.pop("pop_affected")
+
+            processed_data.append(filtered_record)
 
         # Reorder keys in data so start date and end date are together
-        filtered_data = [self.reorder_dict(d) for d in filtered_data]
+        processed_data = [self.reorder_dict(d) for d in processed_data]
 
         # Sort data by descending period number and by country name
-        filtered_data.sort(key=lambda item: (-item["period_number"], item["adm0_name"]))
-        return filtered_data
+        processed_data.sort(key=lambda item: (-item["period_number"], item["adm0_name"]))
+        return processed_data
 
     def generate_dataset(self) -> Optional[Dataset]:
         """
@@ -229,6 +234,7 @@ class Eve:
             filename=resource_name,
             resourcedata=resource,
             quickcharts=None,
+            encoding="utf-8-sig",
         )
 
         # Generate resource by country
@@ -251,5 +257,6 @@ class Eve:
                 filename=resource_name,
                 resourcedata=resource,
                 quickcharts=None,
+                encoding="utf-8-sig",
             )
         return dataset

@@ -29,5 +29,5 @@ hxl_tags:
   "total_area_flooded_ha": "#land+flooded+area+ha"
   "perc_cropland_flooded": "#land+flooded+agri+perc"
   "perc_total_area_flooded": "#land+flooded+perc"
-  "pop_affected": "#population+affected"
+  "pop_exposed": "#population+exposed"
   "end_date": "#date+end"
