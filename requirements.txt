@@ -52,6 +52,8 @@ docopt==0.6.2
     #   num2words
 docutils==0.21.2
     # via defopt
+dotenv==0.9.9
+    # via hdx-scraper-eve (pyproject.toml)
 email-validator==2.2.0
     # via hdx-python-api
 et-xmlfile==2.0.0
@@ -206,6 +208,8 @@ python-dateutil==2.9.0.post0
     #   libhxl
     #   matplotlib
     #   pandas
+python-dotenv==1.0.1
+    # via dotenv
 python-io-wrapper==0.3.1
     # via libhxl
 python-slugify==8.0.4

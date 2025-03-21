@@ -90,6 +90,10 @@ docutils==0.21.2
     # via
     #   -c requirements.txt
     #   defopt
+dotenv==0.9.9
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-eve (pyproject.toml)
 email-validator==2.2.0
     # via
     #   -c requirements.txt
@@ -365,6 +369,10 @@ python-dateutil==2.9.0.post0
     #   libhxl
     #   matplotlib
     #   pandas
+python-dotenv==1.0.1
+    # via
+    #   -c requirements.txt
+    #   dotenv
 python-io-wrapper==0.3.1
     # via
     #   -c requirements.txt
