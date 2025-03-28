@@ -2,6 +2,7 @@ from os.path import join
 
 import pytest
 from hdx.api.configuration import Configuration
+from hdx.data.dataset import Dataset
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
@@ -21,6 +22,22 @@ class TestEve:
         )
         return Configuration.read()
 
+    @pytest.fixture(scope="function")
+    def test_get_arcgis_data(self, monkeypatch):
+        def test_get_arcgis_data(self):
+            result = Dataset.load_from_json(
+                join(
+                    "tests",
+                    "fixtures",
+                    "input",
+                    "filtered-data.json",
+                )
+            )
+            results_list = [feature["attributes"] for feature in result["features"]]
+            return results_list
+
+        monkeypatch.setattr(Eve, "get_arcgis_data", test_get_arcgis_data)
+
     @pytest.fixture(scope="class")
     def fixtures_dir(self):
         return join("tests", "fixtures")
@@ -33,7 +50,7 @@ class TestEve:
     def config_dir(self, fixtures_dir):
         return join("src", "hdx", "scraper", "eve", "config")
 
-    def test_eve(self, configuration, fixtures_dir, input_dir, config_dir):
+    def test_eve(self, configuration, test_get_arcgis_data, fixtures_dir, input_dir, config_dir):
         with temp_dir(
             "TestEve",
             delete_on_success=True,
@@ -50,13 +67,60 @@ class TestEve:
                 )
                 eve = Eve(configuration, retriever, tempdir)
 
+                eve_data = eve.get_arcgis_data()
+                assert eve_data[0] == {
+                    "ObjectId": 120798,
+                    "adm0_iso3": "THA",
+                    "adm0_name": "Thailand",
+                    "adm1_name": "Phangnga",
+                    "adm1_pcode": "TH82",
+                    "adm2_name": "Thai Mueang",
+                    "adm2_pcode": "TH8208",
+                    "admin_level": "admin2",
+                    "biweekly_group": "Period #28 (16/02/2025 to 28/02/2025)",
+                    "cropland_flooded_ha": 7,
+                    "cropland_flooded_sq_km": 0.07,
+                    "end_date": 1740700800000,
+                    "perc_cropland_flooded": 4.046242774566474,
+                    "perc_total_area_flooded": 5.097858099306593,
+                    "period_number": 28,
+                    "pop_affected": 2550,
+                    "start_date": "2025-02-16",
+                    "total_area_flooded_ha": 3185,
+                    "total_area_flooded_sq_km": 31.849999999999998,
+                }
+
+                processed_data = eve.process_data(eve_data)
+                assert processed_data[0] == {
+                    "adm0_iso3": "NGA",
+                    "adm0_name": "Nigeria",
+                    "adm1_name": "Abia",
+                    "adm1_pcode": "NG001",
+                    "adm2_name": "Arochukwu",
+                    "adm2_pcode": "NG001003",
+                    "admin_level": "admin2",
+                    "cropland_flooded_ha": 0,
+                    "cropland_flooded_sq_km": 0,
+                    "end_date": 1740700800000,
+                    "perc_cropland_flooded": 0,
+                    "perc_total_area_flooded": 0.35772245159730026,
+                    "period_number": 28,
+                    "pop_exposed": 451,
+                    "start_date": "2025-02-16",
+                    "total_area_flooded_ha": 184,
+                    "total_area_flooded_sq_km": 1.84,
+                }
+
+                countries = eve.get_country_list(processed_data)
+                assert countries == ["Nigeria", "Thailand", "Yemen"]
+
                 dataset = eve.generate_dataset()
                 dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
 
                 assert dataset == {
                     "name": "fao-flood-events-visualization-in-emergencies-eve",
                     "title": "FAO Flood Events Visualization in Emergencies (EVE)",
-                    "dataset_date": "[2024-01-07T00:00:00 TO 2025-03-15T23:59:59]",
+                    "dataset_date": "[2025-02-16T00:00:00 TO 2025-02-28T23:59:59]",
                     "tags": [
                         {
                             "name": "affected area",
@@ -83,44 +147,7 @@ class TestEve:
                     "methodology": "methodology here",
                     "caveats": "None",
                     "dataset_source": "Food and Agriculture Organization (FAO)",
-                    "groups": [
-                        {"name": "afg"},
-                        {"name": "ago"},
-                        {"name": "bgd"},
-                        {"name": "bfa"},
-                        {"name": "bdi"},
-                        {"name": "khm"},
-                        {"name": "cmr"},
-                        {"name": "caf"},
-                        {"name": "tcd"},
-                        {"name": "col"},
-                        {"name": "cod"},
-                        {"name": "hti"},
-                        {"name": "hnd"},
-                        {"name": "irq"},
-                        {"name": "lao"},
-                        {"name": "mdg"},
-                        {"name": "mwi"},
-                        {"name": "mli"},
-                        {"name": "moz"},
-                        {"name": "mmr"},
-                        {"name": "nam"},
-                        {"name": "npl"},
-                        {"name": "ner"},
-                        {"name": "nga"},
-                        {"name": "pak"},
-                        {"name": "phl"},
-                        {"name": "som"},
-                        {"name": "ssd"},
-                        {"name": "lka"},
-                        {"name": "sdn"},
-                        {"name": "tha"},
-                        {"name": "tza"},
-                        {"name": "vnm"},
-                        {"name": "yem"},
-                        {"name": "zmb"},
-                        {"name": "zwe"},
-                    ],
+                    "groups": [{"name": "nga"}, {"name": "tha"}, {"name": "yem"}],
                     "package_creator": "HDX Data Systems Team",
                     "private": False,
                     "maintainer": "169c44fe-3043-4616-8719-59cf9f101270",
@@ -167,46 +194,28 @@ class TestEve:
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
-                        "population and various land cover types - for Afghanistan "
+                        "population and various land cover types - for Nigeria "
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "afg-events-visualization-in-emergencies.csv",
+                        "name": "nga-events-visualization-in-emergencies.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
-                        "population and various land cover types - for Angola from 1 "
+                        "population and various land cover types - for Thailand from 1 "
                         "July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "ago-events-visualization-in-emergencies.csv",
+                        "name": "tha-events-visualization-in-emergencies.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
-                        "population and various land cover types - for Bangladesh "
+                        "population and various land cover types - for Yemen "
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "bgd-events-visualization-in-emergencies.csv",
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
-                    },
-                    {
-                        "description": "Biweekly insights on flood events - their impacts on "
-                        "population and various land cover types - for Burkina Faso "
-                        "from 1 July 2024 (when available) to date.",
-                        "format": "csv",
-                        "name": "bfa-events-visualization-in-emergencies.csv",
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
-                    },
-                    {
-                        "description": "Biweekly insights on flood events - their impacts on "
-                        "population and various land cover types - for Burundi from "
-                        "1 July 2024 (when available) to date.",
-                        "format": "csv",
-                        "name": "bdi-events-visualization-in-emergencies.csv",
+                        "name": "yem-events-visualization-in-emergencies.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },

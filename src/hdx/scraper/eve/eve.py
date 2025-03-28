@@ -239,8 +239,8 @@ class Eve:
 
         # Generate resource by country
         for i, (iso3, records) in enumerate(grouped.items()):
-            if i == 5:  # for testing
-                break
+            # if i == 5:  # for testing
+            #     break
             resource_name = f"{iso3.lower()}-{slugify(dataset_info['resource_title'])}.csv"
             resource_description = dataset_info["description"].replace(
                 "(country)", Country.get_country_name_from_iso3(iso3)

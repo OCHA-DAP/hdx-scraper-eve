@@ -38,7 +38,7 @@ cryptography==44.0.2
     #   requests-kerberos
 cycler==0.12.1
     # via matplotlib
-dask==2025.2.0
+dask==2025.3.0
     # via arcgis
 decorator==5.2.1
     # via gssapi
@@ -60,7 +60,7 @@ et-xmlfile==2.0.0
     # via openpyxl
 fonttools==4.56.0
     # via matplotlib
-frictionless==5.18.0
+frictionless==5.18.1
     # via hdx-python-utilities
 fsspec==2025.3.0
     # via dask
@@ -72,14 +72,14 @@ gssapi==1.9.0
     #   requests-gssapi
 hdx-python-api==6.3.8
     # via hdx-scraper-eve (pyproject.toml)
-hdx-python-country==3.9.0
+hdx-python-country==3.9.2
     # via hdx-python-api
 hdx-python-utilities==3.8.5
     # via
     #   hdx-scraper-eve (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.12.1
+humanize==4.12.2
     # via frictionless
 idna==3.10
     # via
@@ -183,15 +183,15 @@ pyarrow==19.0.1
     # via arcgis
 pycparser==2.22
     # via cffi
-pydantic==2.10.6
+pydantic==2.11.0
     # via frictionless
-pydantic-core==2.27.2
+pydantic-core==2.33.0
     # via pydantic
 pygments==2.19.1
     # via rich
 pylerc==4.0
     # via arcgis
-pyparsing==3.2.1
+pyparsing==3.2.3
     # via matplotlib
 pyphonetics==0.5.3
     # via hdx-python-utilities
@@ -208,7 +208,7 @@ python-dateutil==2.9.0.post0
     #   libhxl
     #   matplotlib
     #   pandas
-python-dotenv==1.0.1
+python-dotenv==1.1.0
     # via dotenv
 python-io-wrapper==0.3.1
     # via libhxl
@@ -216,7 +216,7 @@ python-slugify==8.0.4
     # via
     #   ckanapi
     #   frictionless
-pytz==2025.1
+pytz==2025.2
     # via pandas
 pyyaml==6.0.2
     # via
@@ -257,7 +257,7 @@ rfc3986==2.0.0
     # via frictionless
 rich==13.9.4
     # via typer
-rpds-py==0.23.1
+rpds-py==0.24.0
     # via
     #   jsonschema
     #   referencing
@@ -265,7 +265,7 @@ ruamel-yaml==0.18.10
     # via hdx-python-utilities
 ruamel-yaml-clib==0.2.12
     # via ruamel-yaml
-setuptools==77.0.3
+setuptools==78.1.0
     # via ckanapi
 shellingham==1.5.4
     # via typer
@@ -281,8 +281,6 @@ six==1.17.0
     #   sphinxcontrib-napoleon
 sphinxcontrib-napoleon==0.7
     # via defopt
-stringcase==1.2.0
-    # via frictionless
 structlog==25.2.0
     # via libhxl
 tableschema-to-template==0.0.13
@@ -305,7 +303,7 @@ typeguard==4.4.2
     # via inflect
 typer==0.15.2
     # via frictionless
-typing-extensions==4.12.2
+typing-extensions==4.13.0
     # via
     #   frictionless
     #   pydantic
@@ -313,7 +311,10 @@ typing-extensions==4.12.2
     #   referencing
     #   typeguard
     #   typer
-tzdata==2025.1
+    #   typing-inspection
+typing-inspection==0.4.0
+    # via pydantic
+tzdata==2025.2
     # via pandas
 ujson==5.10.0
     # via arcgis

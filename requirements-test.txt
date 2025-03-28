@@ -65,7 +65,7 @@ cycler==0.12.1
     # via
     #   -c requirements.txt
     #   matplotlib
-dask==2025.2.0
+dask==2025.3.0
     # via
     #   -c requirements.txt
     #   arcgis
@@ -106,7 +106,7 @@ fonttools==4.56.0
     # via
     #   -c requirements.txt
     #   matplotlib
-frictionless==5.18.0
+frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
@@ -127,7 +127,7 @@ hdx-python-api==6.3.8
     # via
     #   -c requirements.txt
     #   hdx-scraper-eve (pyproject.toml)
-hdx-python-country==3.9.0
+hdx-python-country==3.9.2
     # via
     #   -c requirements.txt
     #   hdx-python-api
@@ -137,7 +137,7 @@ hdx-python-utilities==3.8.5
     #   hdx-scraper-eve (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.12.1
+humanize==4.12.2
     # via
     #   -c requirements.txt
     #   frictionless
@@ -322,11 +322,11 @@ pycparser==2.22
     # via
     #   -c requirements.txt
     #   cffi
-pydantic==2.10.6
+pydantic==2.11.0
     # via
     #   -c requirements.txt
     #   frictionless
-pydantic-core==2.27.2
+pydantic-core==2.33.0
     # via
     #   -c requirements.txt
     #   pydantic
@@ -338,7 +338,7 @@ pylerc==4.0
     # via
     #   -c requirements.txt
     #   arcgis
-pyparsing==3.2.1
+pyparsing==3.2.3
     # via
     #   -c requirements.txt
     #   matplotlib
@@ -369,7 +369,7 @@ python-dateutil==2.9.0.post0
     #   libhxl
     #   matplotlib
     #   pandas
-python-dotenv==1.0.1
+python-dotenv==1.1.0
     # via
     #   -c requirements.txt
     #   dotenv
@@ -382,7 +382,7 @@ python-slugify==8.0.4
     #   -c requirements.txt
     #   ckanapi
     #   frictionless
-pytz==2025.1
+pytz==2025.2
     # via
     #   -c requirements.txt
     #   pandas
@@ -446,7 +446,7 @@ rich==13.9.4
     # via
     #   -c requirements.txt
     #   typer
-rpds-py==0.23.1
+rpds-py==0.24.0
     # via
     #   -c requirements.txt
     #   jsonschema
@@ -459,7 +459,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==77.0.3
+setuptools==78.1.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -486,10 +486,6 @@ sphinxcontrib-napoleon==0.7
     # via
     #   -c requirements.txt
     #   defopt
-stringcase==1.2.0
-    # via
-    #   -c requirements.txt
-    #   frictionless
 structlog==25.2.0
     # via
     #   -c requirements.txt
@@ -531,7 +527,7 @@ typer==0.15.2
     # via
     #   -c requirements.txt
     #   frictionless
-typing-extensions==4.12.2
+typing-extensions==4.13.0
     # via
     #   -c requirements.txt
     #   frictionless
@@ -540,7 +536,12 @@ typing-extensions==4.12.2
     #   referencing
     #   typeguard
     #   typer
-tzdata==2025.1
+    #   typing-inspection
+typing-inspection==0.4.0
+    # via
+    #   -c requirements.txt
+    #   pydantic
+tzdata==2025.2
     # via
     #   -c requirements.txt
     #   pandas

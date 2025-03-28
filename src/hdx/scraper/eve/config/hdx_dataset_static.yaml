@@ -1,6 +1,13 @@
 license_id: cc-by
-methodology: methodology here
-caveats: None
+methodology: A more detailed FAO EVE user manual, including detailed methodology, will be published soon.
+caveats: |
+  EVE analyses are based on global datasets to ensure broad coverage, rapid scalability, and integration into international humanitarian workflows. However, these datasets cannot always capture national or local specificities that would enhance analytical precision.
+
+  While EVE can estimate the extent of flooded cropland, it does not determine whether the affected cropland was actively cultivated at the time of the flood.
+
+  EVE does not inherently differentiate between hazardous and non-hazardous floods, which can lead to false detections in agricultural regions. Some flood events result from regular seasonal patterns or controlled agricultural activities, such as rice paddy planting or aquaculture, rather than actual hazard-related floods.
+
+  A more detailed FAO EVE user manual will be published soon
 dataset_source: Food and Agriculture Organization (FAO)
 package_creator: HDX Data Systems Team
 private: False
