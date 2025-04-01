@@ -2,13 +2,11 @@
 """eve scraper"""
 
 import logging
-import os
 from collections import defaultdict
 from datetime import datetime, timezone
 from typing import List, Optional
 
 from arcgis.gis import GIS
-from dotenv import load_dotenv
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.location.country import Country
@@ -17,15 +15,6 @@ from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
-# Load local .env file if not running in GitHub Actions
-if os.environ.get("GITHUB_ACTIONS") is None:
-    load_dotenv()
-
-USERNAME = os.environ.get("DIEM_USERNAME")
-PASS = os.environ.get("DIEM_PASSWORD")
-if not USERNAME or not PASS:
-    logger.error("DIEM_USERNAME or DIEM_PASSWORD environment variables are missing.")
-
 # Query settings
 PERIOD_NUMBER = None  # "latest"
 FILE_FORMAT = "CSV"
@@ -33,10 +22,19 @@ START_YEAR = 2024
 
 
 class Eve:
-    def __init__(self, configuration: Configuration, retriever: Retrieve, temp_dir: str):
+    def __init__(
+        self,
+        configuration: Configuration,
+        retriever: Retrieve,
+        temp_dir: str,
+        USERNAME: str,
+        PASS: str,
+    ):
         self._configuration = configuration
         self._retriever = retriever
         self._temp_dir = temp_dir
+        self._USERNAME = USERNAME
+        self._PASS = PASS
 
     def calculate_current_period(self) -> int:
         """
@@ -70,7 +68,7 @@ class Eve:
         period_num = PERIOD_NUMBER
 
         # Connect to AGOL
-        gis = GIS(config["base_url"], USERNAME, PASS)
+        gis = GIS(config["base_url"], self._USERNAME, self._PASS)
 
         # Get the feature layer
         item = gis.content.get(config["feature_table_id"])
@@ -238,9 +236,7 @@ class Eve:
         )
 
         # Generate resource by country
-        for i, (iso3, records) in enumerate(grouped.items()):
-            # if i == 5:  # for testing
-            #     break
+        for iso3, records in grouped.items():
             resource_name = f"{iso3.lower()}-{slugify(dataset_info['resource_title'])}.csv"
             resource_description = dataset_info["description"].replace(
                 "(country)", Country.get_country_name_from_iso3(iso3)

@@ -62,7 +62,7 @@ fonttools==4.56.0
     # via matplotlib
 frictionless==5.18.1
     # via hdx-python-utilities
-fsspec==2025.3.0
+fsspec==2025.3.2
     # via dask
 geomet==1.1.0
     # via arcgis
@@ -167,7 +167,7 @@ partd==1.4.2
     # via dask
 petl==1.7.15
     # via frictionless
-pillow==11.1.0
+pillow==11.2.0
     # via
     #   arcgis
     #   matplotlib
@@ -183,7 +183,7 @@ pyarrow==19.0.1
     # via arcgis
 pycparser==2.22
     # via cffi
-pydantic==2.11.0
+pydantic==2.11.1
     # via frictionless
 pydantic-core==2.33.0
     # via pydantic
@@ -255,7 +255,7 @@ requests-toolbelt==1.0.0
     # via arcgis
 rfc3986==2.0.0
     # via frictionless
-rich==13.9.4
+rich==14.0.0
     # via typer
 rpds-py==0.24.0
     # via

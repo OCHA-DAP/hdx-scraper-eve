@@ -6,8 +6,10 @@ script then creates in HDX.
 """
 
 import logging
+import os
 from os.path import dirname, expanduser, join
 
+from dotenv import load_dotenv
 from hdx.api.configuration import Configuration
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
@@ -23,6 +25,15 @@ logger = logging.getLogger(__name__)
 _USER_AGENT_LOOKUP = "hdx-scraper-eve"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: eve"
+
+# Load local .env file if not running in GitHub Actions
+if os.getenv("GITHUB_ACTIONS") is None:
+    load_dotenv()
+
+USERNAME = os.getenv("DIEM_USERNAME")
+PASS = os.getenv("DIEM_PASSWORD")
+if not USERNAME or not PASS:
+    logger.error("DIEM_USERNAME or DIEM_PASSWORD environment variables are missing.")
 
 
 def main(
@@ -53,7 +64,7 @@ def main(
             # Steps to generate dataset
             #
             configuration = Configuration.read()
-            eve = Eve(configuration, retriever, temp_dir)
+            eve = Eve(configuration, retriever, temp_dir, USERNAME, PASS)
             dataset = eve.generate_dataset()
             dataset.update_from_yaml(
                 path=join(dirname(__file__), "config", "hdx_dataset_static.yaml")

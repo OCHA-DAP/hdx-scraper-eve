@@ -1,3 +1,4 @@
+import os
 from os.path import join
 
 import pytest
@@ -51,6 +52,9 @@ class TestEve:
         return join("src", "hdx", "scraper", "eve", "config")
 
     def test_eve(self, configuration, test_get_arcgis_data, fixtures_dir, input_dir, config_dir):
+        USERNAME = os.getenv("DIEM_USERNAME")
+        PASS = os.getenv("DIEM_PASSWORD")
+
         with temp_dir(
             "TestEve",
             delete_on_success=True,
@@ -65,7 +69,7 @@ class TestEve:
                     save=False,
                     use_saved=True,
                 )
-                eve = Eve(configuration, retriever, tempdir)
+                eve = Eve(configuration, retriever, tempdir, USERNAME, PASS)
 
                 eve_data = eve.get_arcgis_data()
                 assert eve_data[0] == {
@@ -144,8 +148,26 @@ class TestEve:
                         },
                     ],
                     "license_id": "cc-by",
-                    "methodology": "methodology here",
-                    "caveats": "None",
+                    "methodology": "A more detailed FAO EVE user manual, including detailed "
+                    "methodology, will be published soon.",
+                    "caveats": "EVE analyses are based on global datasets to ensure broad "
+                    "coverage, rapid scalability, and integration into international "
+                    "humanitarian workflows. However, these datasets cannot always "
+                    "capture national or local specificities that would enhance "
+                    "analytical precision.\n"
+                    "\n"
+                    "While EVE can estimate the extent of flooded cropland, it does "
+                    "not determine whether the affected cropland was actively "
+                    "cultivated at the time of the flood.\n"
+                    "\n"
+                    "EVE does not inherently differentiate between hazardous and "
+                    "non-hazardous floods, which can lead to false detections in "
+                    "agricultural regions. Some flood events result from regular "
+                    "seasonal patterns or controlled agricultural activities, such as "
+                    "rice paddy planting or aquaculture, rather than actual "
+                    "hazard-related floods.\n"
+                    "\n"
+                    "A more detailed FAO EVE user manual will be published soon\n",
                     "dataset_source": "Food and Agriculture Organization (FAO)",
                     "groups": [{"name": "nga"}, {"name": "tha"}, {"name": "yem"}],
                     "package_creator": "HDX Data Systems Team",
