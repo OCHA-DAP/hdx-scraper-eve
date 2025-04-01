@@ -1,3 +1,4 @@
+import os
 from os.path import join
 
 import pytest
@@ -51,6 +52,9 @@ class TestEve:
         return join("src", "hdx", "scraper", "eve", "config")
 
     def test_eve(self, configuration, test_get_arcgis_data, fixtures_dir, input_dir, config_dir):
+        USERNAME = os.getenv("DIEM_USERNAME")
+        PASS = os.getenv("DIEM_PASSWORD")
+
         with temp_dir(
             "TestEve",
             delete_on_success=True,
@@ -65,7 +69,7 @@ class TestEve:
                     save=False,
                     use_saved=True,
                 )
-                eve = Eve(configuration, retriever, tempdir)
+                eve = Eve(configuration, retriever, tempdir, USERNAME, PASS)
 
                 eve_data = eve.get_arcgis_data()
                 assert eve_data[0] == {
