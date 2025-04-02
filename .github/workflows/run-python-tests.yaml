@@ -26,7 +26,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.12'
     - name: Install Kerberos development libraries
       run: sudo apt-get update && sudo apt-get install -y libkrb5-dev
     - name: Install Hatch
