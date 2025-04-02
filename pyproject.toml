@@ -14,7 +14,7 @@ requires-python = ">=3.12"
 dependencies = [
   "hdx-python-api",
   "hdx-python-utilities",
-  "arcgis",
+  "arcgis>=2.0.0,<3.0.0",
   "dotenv"
 ]
 
