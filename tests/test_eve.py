@@ -148,7 +148,7 @@ class TestEve:
                         },
                     ],
                     "license_id": "cc-by",
-                    "methodology": "[Eve user guide](https://data-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about)\n",
+                    "methodology": "[EVE user guide](https://data-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about)\n",
                     "caveats": "EVE analyses are based on global datasets to ensure broad "
                     "coverage, rapid scalability, and integration into international "
                     "humanitarian workflows. However, these datasets cannot always "
