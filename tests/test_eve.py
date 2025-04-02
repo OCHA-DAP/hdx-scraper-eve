@@ -164,9 +164,7 @@ class TestEve:
                     "agricultural regions. Some flood events result from regular "
                     "seasonal patterns or controlled agricultural activities, such as "
                     "rice paddy planting or aquaculture, rather than actual "
-                    "hazard-related floods.\n"
-                    "\n"
-                    "A more detailed FAO EVE user manual will be published soon\n",
+                    "hazard-related floods.\n",
                     "dataset_source": "Food and Agriculture Organization (FAO)",
                     "groups": [{"name": "nga"}, {"name": "tha"}, {"name": "yem"}],
                     "package_creator": "HDX Data Systems Team",

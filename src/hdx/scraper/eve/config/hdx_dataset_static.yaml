@@ -6,8 +6,6 @@ caveats: |
   While EVE can estimate the extent of flooded cropland, it does not determine whether the affected cropland was actively cultivated at the time of the flood.
 
   EVE does not inherently differentiate between hazardous and non-hazardous floods, which can lead to false detections in agricultural regions. Some flood events result from regular seasonal patterns or controlled agricultural activities, such as rice paddy planting or aquaculture, rather than actual hazard-related floods.
-
-  A more detailed FAO EVE user manual will be published soon
 dataset_source: Food and Agriculture Organization (FAO)
 package_creator: HDX Data Systems Team
 private: False
