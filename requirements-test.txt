@@ -102,7 +102,7 @@ et-xmlfile==2.0.0
     # via
     #   -c requirements.txt
     #   openpyxl
-fonttools==4.56.0
+fonttools==4.57.0
     # via
     #   -c requirements.txt
     #   matplotlib
@@ -322,11 +322,11 @@ pycparser==2.22
     # via
     #   -c requirements.txt
     #   cffi
-pydantic==2.11.1
+pydantic==2.11.2
     # via
     #   -c requirements.txt
     #   frictionless
-pydantic-core==2.33.0
+pydantic-core==2.33.1
     # via
     #   -c requirements.txt
     #   pydantic
@@ -527,7 +527,7 @@ typer==0.15.2
     # via
     #   -c requirements.txt
     #   frictionless
-typing-extensions==4.13.0
+typing-extensions==4.13.1
     # via
     #   -c requirements.txt
     #   frictionless

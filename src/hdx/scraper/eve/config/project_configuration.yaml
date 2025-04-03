@@ -3,8 +3,8 @@ base_url: "https://hqfao-hub.maps.arcgis.com"
 feature_table_id: "98265cbe82e344f88552d4c2d3615c3c"
 
 description: Biweekly insights on flood events - their impacts on population and various land cover types - for (country) from 1 July 2024 (when available) to date.
-title: FAO Flood Events Visualization in Emergencies (EVE)
-resource_title: Events Visualization in Emergencies
+title: FAO EVE Global flood monitoring system
+resource_title: Flood Events FAO EVE
 
 tags:
   - affected area

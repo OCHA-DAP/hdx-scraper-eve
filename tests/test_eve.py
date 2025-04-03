@@ -122,8 +122,8 @@ class TestEve:
                 dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
 
                 assert dataset == {
-                    "name": "fao-flood-events-visualization-in-emergencies-eve",
-                    "title": "FAO Flood Events Visualization in Emergencies (EVE)",
+                    "name": "fao-eve-global-flood-monitoring-system",
+                    "title": "FAO EVE Global flood monitoring system",
                     "dataset_date": "[2025-02-16T00:00:00 TO 2025-02-28T23:59:59]",
                     "tags": [
                         {
@@ -183,7 +183,9 @@ class TestEve:
                     "land cover data from the European Space Agency’s WorldCover 10m 2021 "
                     "dataset. Covering approximately 40 countries, the system offers daily "
                     "and biweekly insights, providing a continuously updated view of flood "
-                    "dynamics and their effects.\n"
+                    "dynamics and their effects. Access the [FAO EVE user guide](https://data"
+                    "-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about) "
+                    "to learn more.\n"
                     "\n"
                     "The platform presents results through interactive maps, charts, and "
                     "tables, supporting decision-making in disaster management, agricultural "
@@ -203,7 +205,7 @@ class TestEve:
                 resources = dataset.get_resources()
                 assert resources == [
                     {
-                        "name": "global-events-visualization-in-emergencies.csv",
+                        "name": "global-flood-events-fao-eve.csv",
                         "description": "Biweekly insights on flood events - their impacts on "
                         "population and various land cover types - for all countries from 1 "
                         "July 2024 (when available) to date.",
@@ -216,7 +218,7 @@ class TestEve:
                         "population and various land cover types - for Nigeria "
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "nga-events-visualization-in-emergencies.csv",
+                        "name": "nga-flood-events-fao-eve.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -225,7 +227,7 @@ class TestEve:
                         "population and various land cover types - for Thailand from 1 "
                         "July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "tha-events-visualization-in-emergencies.csv",
+                        "name": "tha-flood-events-fao-eve.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -234,7 +236,7 @@ class TestEve:
                         "population and various land cover types - for Yemen "
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
-                        "name": "yem-events-visualization-in-emergencies.csv",
+                        "name": "yem-flood-events-fao-eve.csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
