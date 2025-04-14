@@ -123,7 +123,7 @@ class TestEve:
 
                 assert dataset == {
                     "name": "fao-eve-global-flood-monitoring-system",
-                    "title": "FAO EVE Global flood monitoring system",
+                    "title": "FAO EVE Global Flood Monitoring System",
                     "dataset_date": "[2025-02-16T00:00:00 TO 2025-02-28T23:59:59]",
                     "tags": [
                         {

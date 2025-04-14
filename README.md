@@ -1,9 +1,9 @@
-# Collector for eve Datasets
+# Collector for EVE Datasets
 [![Build Status](https://github.com/OCHA-DAP/hdx-scraper-eve/actions/workflows/run-python-tests.yaml/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-eve/actions/workflows/run-python-tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-eve/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-eve?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script downloads subsets of the EVE (Events Visualization in Emergencies) feature table hosted on ArcGIS Online (AGOL). It creates 1 dataset with 1 global resource and 1 resource per country. This script will run every 14 days.
+This script downloads subsets of the EVE (Events Visualization in Emergencies) feature table hosted on ArcGIS Online (AGOL). It creates 1 dataset with 1 global resource and 1 resource per country and will run every 14 days. DIEM account credentials are stored in a .env file in the root directory and are needed to run this script. The credentials are stored in LastPass.
 
 ## Development
 
