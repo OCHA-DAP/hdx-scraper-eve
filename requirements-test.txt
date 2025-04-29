@@ -4,7 +4,7 @@ annotated-types==0.7.0
     # via
     #   -c requirements.txt
     #   pydantic
-arcgis==2.4.0
+arcgis==2.4.1
     # via
     #   -c requirements.txt
     #   hdx-scraper-eve (pyproject.toml)
@@ -19,7 +19,7 @@ cachetools==5.5.2
     # via
     #   -c requirements.txt
     #   arcgis
-certifi==2025.1.31
+certifi==2025.4.26
     # via
     #   -c requirements.txt
     #   requests
@@ -49,7 +49,7 @@ cloudpickle==3.1.1
     # via
     #   -c requirements.txt
     #   dask
-contourpy==1.3.1
+contourpy==1.3.2
     # via
     #   -c requirements.txt
     #   matplotlib
@@ -60,19 +60,19 @@ cryptography==44.0.2
     #   -c requirements.txt
     #   arcgis
     #   pyspnego
-    #   requests-kerberos
 cycler==0.12.1
     # via
     #   -c requirements.txt
     #   matplotlib
-dask==2025.3.0
+dask==2024.12.1
     # via
     #   -c requirements.txt
     #   arcgis
-decorator==5.2.1
+    #   dask-expr
+dask-expr==1.1.21
     # via
     #   -c requirements.txt
-    #   gssapi
+    #   dask
 defopt==6.4.0
     # via
     #   -c requirements.txt
@@ -118,11 +118,6 @@ geomet==1.1.0
     # via
     #   -c requirements.txt
     #   arcgis
-gssapi==1.9.0
-    # via
-    #   -c requirements.txt
-    #   pyspnego
-    #   requests-gssapi
 hdx-python-api==6.3.8
     # via
     #   -c requirements.txt
@@ -189,7 +184,7 @@ jsonschema==4.23.0
     #   -c requirements.txt
     #   frictionless
     #   tableschema-to-template
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via
     #   -c requirements.txt
     #   jsonschema
@@ -201,10 +196,6 @@ kiwisolver==1.4.8
     # via
     #   -c requirements.txt
     #   matplotlib
-krb5==0.7.1
-    # via
-    #   -c requirements.txt
-    #   pyspnego
 libhxl==5.2.2
     # via
     #   -c requirements.txt
@@ -218,7 +209,7 @@ loguru==0.7.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-lxml==5.3.2
+lxml==5.4.0
     # via
     #   -c requirements.txt
     #   arcgis
@@ -250,12 +241,16 @@ mdurl==0.1.2
     # via
     #   -c requirements.txt
     #   markdown-it-py
-more-itertools==10.6.0
+more-itertools==10.7.0
     # via
     #   -c requirements.txt
     #   inflect
     #   jaraco-classes
     #   jaraco-functools
+networkx==3.4.2
+    # via
+    #   -c requirements.txt
+    #   arcgis
 num2words==0.5.14
     # via
     #   -c requirements.txt
@@ -265,8 +260,10 @@ numpy==1.26.4
     #   -c requirements.txt
     #   arcgis
     #   contourpy
+    #   dask
     #   matplotlib
     #   pandas
+    #   pyarrow
     #   pylerc
 oauthlib==3.2.2
     # via
@@ -276,16 +273,18 @@ openpyxl==3.1.5
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-packaging==24.2
+packaging==25.0
     # via
     #   -c requirements.txt
     #   dask
     #   matplotlib
     #   pytest
-pandas==2.1.4
+pandas==2.2.3
     # via
     #   -c requirements.txt
     #   arcgis
+    #   dask
+    #   dask-expr
 partd==1.4.2
     # via
     #   -c requirements.txt
@@ -314,10 +313,11 @@ puremagic==1.28
     # via
     #   -c requirements.txt
     #   arcgis
-pyarrow==19.0.1
+pyarrow==16.1.0
     # via
     #   -c requirements.txt
     #   arcgis
+    #   dask-expr
 pycparser==2.22
     # via
     #   -c requirements.txt
@@ -325,6 +325,7 @@ pycparser==2.22
 pydantic==2.11.3
     # via
     #   -c requirements.txt
+    #   arcgis
     #   frictionless
 pydantic-core==2.33.1
     # via
@@ -346,15 +347,10 @@ pyphonetics==0.5.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-pyshp==2.3.1
-    # via
-    #   -c requirements.txt
-    #   arcgis
 pyspnego==0.11.2
     # via
     #   -c requirements.txt
     #   arcgis
-    #   requests-kerberos
 pytest==8.3.5
     # via
     #   hdx-scraper-eve (pyproject.toml)
@@ -405,7 +401,7 @@ referencing==0.36.2
     #   -c requirements.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.31.0
+requests==2.32.3
     # via
     #   -c requirements.txt
     #   arcgis
@@ -414,22 +410,12 @@ requests==2.31.0
     #   hdx-python-api
     #   libhxl
     #   requests-file
-    #   requests-gssapi
-    #   requests-kerberos
     #   requests-oauthlib
     #   requests-toolbelt
 requests-file==2.1.0
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-requests-gssapi==1.3.0
-    # via
-    #   -c requirements.txt
-    #   arcgis
-requests-kerberos==0.15.0
-    # via
-    #   -c requirements.txt
-    #   arcgis
 requests-oauthlib==2.0.0
     # via
     #   -c requirements.txt
@@ -459,7 +445,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==78.1.0
+setuptools==80.0.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -486,7 +472,7 @@ sphinxcontrib-napoleon==0.7
     # via
     #   -c requirements.txt
     #   defopt
-structlog==25.2.0
+structlog==25.3.0
     # via
     #   -c requirements.txt
     #   libhxl
@@ -523,7 +509,7 @@ typeguard==4.4.2
     # via
     #   -c requirements.txt
     #   inflect
-typer==0.15.2
+typer==0.15.3
     # via
     #   -c requirements.txt
     #   frictionless
@@ -549,7 +535,7 @@ ujson==5.10.0
     # via
     #   -c requirements.txt
     #   arcgis
-unidecode==1.3.8
+unidecode==1.4.0
     # via
     #   -c requirements.txt
     #   libhxl
@@ -564,6 +550,10 @@ validators==0.34.0
     # via
     #   -c requirements.txt
     #   frictionless
+websocket-client==1.8.0
+    # via
+    #   -c requirements.txt
+    #   arcgis
 wheel==0.45.1
     # via
     #   -c requirements.txt
@@ -580,7 +570,7 @@ xlsx2csv==0.8.4
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-xlsxwriter==3.2.2
+xlsxwriter==3.2.3
     # via
     #   -c requirements.txt
     #   tableschema-to-template

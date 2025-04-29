@@ -48,7 +48,9 @@ class Eve:
         current_month = current_datetime.month
 
         # Each year has 24 periods (2 per month)
-        total_periods_since_start = (current_year - start_year) * 24 + (current_month - 1) * 2
+        total_periods_since_start = (current_year - start_year) * 24 + (
+            current_month - 1
+        ) * 2
 
         # Determine if we are in the first or second period of the current month
         if current_datetime.day >= 15:
@@ -93,7 +95,9 @@ class Eve:
                     print(f"Data found for period_number: {period_num}")
                     break  # Exit loop when data is found
                 else:
-                    print(f"No data for period_num: {period_num}, trying previous period...")
+                    print(
+                        f"No data for period_num: {period_num}, trying previous period..."
+                    )
                     period_num -= 1  # Try the previous period
 
         if period_num is not None:
@@ -104,10 +108,15 @@ class Eve:
 
         # Query the feature table but exclude the ObjectId field
         fields = [
-            f["name"] for f in feature_layer.properties.fields if f["name"].lower() != "objectid"
+            f["name"]
+            for f in feature_layer.properties.fields
+            if f["name"].lower() != "objectid"
         ]
         result = feature_layer.query(
-            where=where_clause, out_fields=",".join(fields), return_geometry=False, as_df=False
+            where=where_clause,
+            out_fields=",".join(fields),
+            return_geometry=False,
+            as_df=False,
         )
         results_list = [feature.attributes for feature in result.features]
         return results_list
@@ -135,10 +144,12 @@ class Eve:
         """
         Parse the 'start_date' and 'end_date' from a record.
         """
-        start = record["start_date"]  # datetime.strptime(record["start_date"], "%Y-%m-%d").date()
-        end = datetime.fromtimestamp(record["end_date"] / 1000, tz=timezone.utc).strftime(
-            "%Y-%m-%d"
-        )
+        start = record[
+            "start_date"
+        ]  # datetime.strptime(record["start_date"], "%Y-%m-%d").date()
+        end = datetime.fromtimestamp(
+            record["end_date"] / 1000, tz=timezone.utc
+        ).strftime("%Y-%m-%d")
         return start, end
 
     def reorder_dict(self, d: dict) -> dict:
@@ -179,7 +190,9 @@ class Eve:
         processed_data = [self.reorder_dict(d) for d in processed_data]
 
         # Sort data by descending period number and by country name
-        processed_data.sort(key=lambda item: (-item["period_number"], item["adm0_name"]))
+        processed_data.sort(
+            key=lambda item: (-item["period_number"], item["adm0_name"])
+        )
         return processed_data
 
     def generate_dataset(self) -> Optional[Dataset]:
@@ -218,10 +231,13 @@ class Eve:
 
         # Create global resource
         resource_name = f"global-{slugify(dataset_info['resource_title'])}.csv"
-        resource_description = dataset_info["description"].replace("(country)", "all countries")
+        resource_description = dataset_info["description"].replace(
+            "(country)", "all countries"
+        )
         resource = {
             "name": resource_name,
             "description": resource_description,
+            "p_coded": True,
         }
 
         dataset.generate_resource_from_iterable(
@@ -237,13 +253,16 @@ class Eve:
 
         # Generate resource by country
         for iso3, records in grouped.items():
-            resource_name = f"{iso3.lower()}-{slugify(dataset_info['resource_title'])}.csv"
+            resource_name = (
+                f"{iso3.lower()}-{slugify(dataset_info['resource_title'])}.csv"
+            )
             resource_description = dataset_info["description"].replace(
                 "(country)", Country.get_country_name_from_iso3(iso3)
             )
             resource = {
                 "name": resource_name,
                 "description": resource_description,
+                "p_coded": True,
             }
             dataset.generate_resource_from_iterable(
                 headers=list(records[0].keys()),

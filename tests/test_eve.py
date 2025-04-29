@@ -2,27 +2,15 @@ import os
 from os.path import join
 
 import pytest
-from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
-from hdx.utilities.useragent import UserAgent
 
 from hdx.scraper.eve.eve import Eve
 
 
 class TestEve:
-    @pytest.fixture(scope="function")
-    def configuration(self, config_dir):
-        UserAgent.set_global("test")
-        Configuration._create(
-            hdx_read_only=True,
-            hdx_site="prod",
-            project_config_yaml=join(config_dir, "project_configuration.yaml"),
-        )
-        return Configuration.read()
-
     @pytest.fixture(scope="function")
     def test_get_arcgis_data(self, monkeypatch):
         def test_get_arcgis_data(self):
@@ -39,19 +27,9 @@ class TestEve:
 
         monkeypatch.setattr(Eve, "get_arcgis_data", test_get_arcgis_data)
 
-    @pytest.fixture(scope="class")
-    def fixtures_dir(self):
-        return join("tests", "fixtures")
-
-    @pytest.fixture(scope="class")
-    def input_dir(self, fixtures_dir):
-        return join(fixtures_dir, "input")
-
-    @pytest.fixture(scope="class")
-    def config_dir(self, fixtures_dir):
-        return join("src", "hdx", "scraper", "eve", "config")
-
-    def test_eve(self, configuration, test_get_arcgis_data, fixtures_dir, input_dir, config_dir):
+    def test_eve(
+        self, configuration, test_get_arcgis_data, fixtures_dir, input_dir, config_dir
+    ):
         USERNAME = os.getenv("DIEM_USERNAME")
         PASS = os.getenv("DIEM_PASSWORD")
 
@@ -119,7 +97,9 @@ class TestEve:
                 assert countries == ["Nigeria", "Thailand", "Yemen"]
 
                 dataset = eve.generate_dataset()
-                dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
+                dataset.update_from_yaml(
+                    path=join(config_dir, "hdx_dataset_static.yaml")
+                )
 
                 assert dataset == {
                     "name": "fao-eve-global-flood-monitoring-system",
@@ -209,6 +189,7 @@ class TestEve:
                         "description": "Biweekly insights on flood events - their impacts on "
                         "population and various land cover types - for all countries from 1 "
                         "July 2024 (when available) to date.",
+                        "p_coded": True,
                         "format": "csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
@@ -219,6 +200,7 @@ class TestEve:
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "nga-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -228,6 +210,7 @@ class TestEve:
                         "July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "tha-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -237,6 +220,7 @@ class TestEve:
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "yem-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
