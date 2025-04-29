@@ -35,8 +35,6 @@ jobs:
       env:
         DIEM_USERNAME: ${{ secrets.DIEM_USERNAME }}
         DIEM_PASSWORD: ${{ secrets.DIEM_PASSWORD }}
-        HDX_KEY_TEST: ${{ secrets.HDX_BOT_SCRAPERS_API_TOKEN }}
-        GSHEET_AUTH: ${{ secrets.GSHEET_AUTH }}
       run: |
         hatch test
     - name: Check styling
