@@ -189,6 +189,7 @@ class TestEve:
                         "description": "Biweekly insights on flood events - their impacts on "
                         "population and various land cover types - for all countries from 1 "
                         "July 2024 (when available) to date.",
+                        "p_coded": True,
                         "format": "csv",
                         "resource_type": "file.upload",
                         "url_type": "upload",
@@ -199,6 +200,7 @@ class TestEve:
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "nga-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -208,6 +210,7 @@ class TestEve:
                         "July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "tha-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },
@@ -217,6 +220,7 @@ class TestEve:
                         "from 1 July 2024 (when available) to date.",
                         "format": "csv",
                         "name": "yem-flood-events-fao-eve.csv",
+                        "p_coded": True,
                         "resource_type": "file.upload",
                         "url_type": "upload",
                     },

@@ -237,6 +237,7 @@ class Eve:
         resource = {
             "name": resource_name,
             "description": resource_description,
+            "p_coded": True,
         }
 
         dataset.generate_resource_from_iterable(
@@ -261,6 +262,7 @@ class Eve:
             resource = {
                 "name": resource_name,
                 "description": resource_description,
+                "p_coded": True,
             }
             dataset.generate_resource_from_iterable(
                 headers=list(records[0].keys()),
