@@ -60,6 +60,7 @@ cryptography==44.0.2
     #   -c requirements.txt
     #   arcgis
     #   pyspnego
+    #   requests-kerberos
 cycler==0.12.1
     # via
     #   -c requirements.txt
@@ -73,6 +74,10 @@ dask-expr==1.1.21
     # via
     #   -c requirements.txt
     #   dask
+decorator==5.2.1
+    # via
+    #   -c requirements.txt
+    #   gssapi
 defopt==6.4.0
     # via
     #   -c requirements.txt
@@ -118,6 +123,10 @@ geomet==1.1.0
     # via
     #   -c requirements.txt
     #   arcgis
+gssapi==1.9.0
+    # via
+    #   -c requirements.txt
+    #   pyspnego
 hdx-python-api==6.3.8
     # via
     #   -c requirements.txt
@@ -200,6 +209,7 @@ krb5==0.7.1
     # via
     #   -c requirements.txt
     #   hdx-scraper-eve (pyproject.toml)
+    #   pyspnego
 libhxl==5.2.2
     # via
     #   -c requirements.txt
@@ -355,6 +365,7 @@ pyspnego==0.11.2
     # via
     #   -c requirements.txt
     #   arcgis
+    #   requests-kerberos
 pytest==8.3.5
     # via
     #   hdx-scraper-eve (pyproject.toml)
@@ -414,12 +425,17 @@ requests==2.32.3
     #   hdx-python-api
     #   libhxl
     #   requests-file
+    #   requests-kerberos
     #   requests-oauthlib
     #   requests-toolbelt
 requests-file==2.1.0
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
+requests-kerberos==0.15.0
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-eve (pyproject.toml)
 requests-oauthlib==2.0.0
     # via
     #   -c requirements.txt

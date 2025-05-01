@@ -35,6 +35,7 @@ cryptography==44.0.2
     # via
     #   arcgis
     #   pyspnego
+    #   requests-kerberos
 cycler==0.12.1
     # via matplotlib
 dask==2024.12.1
@@ -43,6 +44,8 @@ dask==2024.12.1
     #   dask-expr
 dask-expr==1.1.21
     # via dask
+decorator==5.2.1
+    # via gssapi
 defopt==6.4.0
     # via hdx-python-api
 dnspython==2.7.0
@@ -67,6 +70,8 @@ fsspec==2025.3.2
     # via dask
 geomet==1.1.0
     # via arcgis
+gssapi==1.9.0
+    # via pyspnego
 hdx-python-api==6.3.8
     # via hdx-scraper-eve (pyproject.toml)
 hdx-python-country==3.9.2
@@ -111,7 +116,9 @@ keyring==25.6.0
 kiwisolver==1.4.8
     # via matplotlib
 krb5==0.7.1
-    # via hdx-scraper-eve (pyproject.toml)
+    # via
+    #   hdx-scraper-eve (pyproject.toml)
+    #   pyspnego
 libhxl==5.2.2
     # via
     #   hdx-python-api
@@ -204,7 +211,9 @@ pyparsing==3.2.3
 pyphonetics==0.5.3
     # via hdx-python-utilities
 pyspnego==0.11.2
-    # via arcgis
+    # via
+    #   arcgis
+    #   requests-kerberos
 python-dateutil==2.9.0.post0
     # via
     #   frictionless
@@ -243,10 +252,13 @@ requests==2.32.3
     #   hdx-python-api
     #   libhxl
     #   requests-file
+    #   requests-kerberos
     #   requests-oauthlib
     #   requests-toolbelt
 requests-file==2.1.0
     # via hdx-python-utilities
+requests-kerberos==0.15.0
+    # via hdx-scraper-eve (pyproject.toml)
 requests-oauthlib==2.0.0
     # via arcgis
 requests-toolbelt==1.0.0
