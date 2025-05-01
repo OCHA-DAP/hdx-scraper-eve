@@ -4,7 +4,7 @@ annotated-types==0.7.0
     # via
     #   -c requirements.txt
     #   pydantic
-arcgis==2.4.1
+arcgis==2.4.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-eve (pyproject.toml)
@@ -60,19 +60,19 @@ cryptography==44.0.2
     #   -c requirements.txt
     #   arcgis
     #   pyspnego
+    #   requests-kerberos
 cycler==0.12.1
     # via
     #   -c requirements.txt
     #   matplotlib
-dask==2024.12.1
+dask==2025.4.1
     # via
     #   -c requirements.txt
     #   arcgis
-    #   dask-expr
-dask-expr==1.1.21
+decorator==5.2.1
     # via
     #   -c requirements.txt
-    #   dask
+    #   gssapi
 defopt==6.4.0
     # via
     #   -c requirements.txt
@@ -118,6 +118,11 @@ geomet==1.1.0
     # via
     #   -c requirements.txt
     #   arcgis
+gssapi==1.9.0
+    # via
+    #   -c requirements.txt
+    #   pyspnego
+    #   requests-gssapi
 hdx-python-api==6.3.8
     # via
     #   -c requirements.txt
@@ -132,7 +137,7 @@ hdx-python-utilities==3.8.5
     #   hdx-scraper-eve (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.12.2
+humanize==4.12.3
     # via
     #   -c requirements.txt
     #   frictionless
@@ -196,6 +201,11 @@ kiwisolver==1.4.8
     # via
     #   -c requirements.txt
     #   matplotlib
+krb5==0.7.1
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-eve (pyproject.toml)
+    #   pyspnego
 libhxl==5.2.2
     # via
     #   -c requirements.txt
@@ -247,10 +257,6 @@ more-itertools==10.7.0
     #   inflect
     #   jaraco-classes
     #   jaraco-functools
-networkx==3.4.2
-    # via
-    #   -c requirements.txt
-    #   arcgis
 num2words==0.5.14
     # via
     #   -c requirements.txt
@@ -260,10 +266,8 @@ numpy==1.26.4
     #   -c requirements.txt
     #   arcgis
     #   contourpy
-    #   dask
     #   matplotlib
     #   pandas
-    #   pyarrow
     #   pylerc
 oauthlib==3.2.2
     # via
@@ -279,12 +283,10 @@ packaging==25.0
     #   dask
     #   matplotlib
     #   pytest
-pandas==2.2.3
+pandas==2.1.4
     # via
     #   -c requirements.txt
     #   arcgis
-    #   dask
-    #   dask-expr
 partd==1.4.2
     # via
     #   -c requirements.txt
@@ -313,21 +315,19 @@ puremagic==1.28
     # via
     #   -c requirements.txt
     #   arcgis
-pyarrow==16.1.0
+pyarrow==20.0.0
     # via
     #   -c requirements.txt
     #   arcgis
-    #   dask-expr
 pycparser==2.22
     # via
     #   -c requirements.txt
     #   cffi
-pydantic==2.11.3
+pydantic==2.11.4
     # via
     #   -c requirements.txt
-    #   arcgis
     #   frictionless
-pydantic-core==2.33.1
+pydantic-core==2.33.2
     # via
     #   -c requirements.txt
     #   pydantic
@@ -347,10 +347,15 @@ pyphonetics==0.5.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
+pyshp==2.3.1
+    # via
+    #   -c requirements.txt
+    #   arcgis
 pyspnego==0.11.2
     # via
     #   -c requirements.txt
     #   arcgis
+    #   requests-kerberos
 pytest==8.3.5
     # via
     #   hdx-scraper-eve (pyproject.toml)
@@ -401,7 +406,7 @@ referencing==0.36.2
     #   -c requirements.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.31.0
     # via
     #   -c requirements.txt
     #   arcgis
@@ -410,12 +415,22 @@ requests==2.32.3
     #   hdx-python-api
     #   libhxl
     #   requests-file
+    #   requests-gssapi
+    #   requests-kerberos
     #   requests-oauthlib
     #   requests-toolbelt
 requests-file==2.1.0
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
+requests-gssapi==1.3.0
+    # via
+    #   -c requirements.txt
+    #   arcgis
+requests-kerberos==0.15.0
+    # via
+    #   -c requirements.txt
+    #   arcgis
 requests-oauthlib==2.0.0
     # via
     #   -c requirements.txt
@@ -445,7 +460,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==80.0.0
+setuptools==80.1.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -546,14 +561,10 @@ urllib3==2.4.0
     #   arcgis
     #   libhxl
     #   requests
-validators==0.34.0
+validators==0.35.0
     # via
     #   -c requirements.txt
     #   frictionless
-websocket-client==1.8.0
-    # via
-    #   -c requirements.txt
-    #   arcgis
 wheel==0.45.1
     # via
     #   -c requirements.txt

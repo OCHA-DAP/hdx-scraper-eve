@@ -14,8 +14,9 @@ requires-python = ">=3.12"
 dependencies = [
   "hdx-python-api",
   "hdx-python-utilities",
-  "arcgis>=2.0.0,<3.0.0",
+  "arcgis==2.4.0",
   "dotenv",
+  "krb5",
 ]
 
 dynamic = ["version"]
