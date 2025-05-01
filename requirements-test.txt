@@ -132,7 +132,7 @@ hdx-python-utilities==3.8.5
     #   hdx-scraper-eve (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.12.2
+humanize==4.12.3
     # via
     #   -c requirements.txt
     #   frictionless
@@ -196,6 +196,10 @@ kiwisolver==1.4.8
     # via
     #   -c requirements.txt
     #   matplotlib
+krb5==0.7.1
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-eve (pyproject.toml)
 libhxl==5.2.2
     # via
     #   -c requirements.txt
@@ -322,12 +326,12 @@ pycparser==2.22
     # via
     #   -c requirements.txt
     #   cffi
-pydantic==2.11.3
+pydantic==2.11.4
     # via
     #   -c requirements.txt
     #   arcgis
     #   frictionless
-pydantic-core==2.33.1
+pydantic-core==2.33.2
     # via
     #   -c requirements.txt
     #   pydantic
@@ -445,7 +449,7 @@ ruamel-yaml-clib==0.2.12
     # via
     #   -c requirements.txt
     #   ruamel-yaml
-setuptools==80.0.0
+setuptools==80.1.0
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -546,7 +550,7 @@ urllib3==2.4.0
     #   arcgis
     #   libhxl
     #   requests
-validators==0.34.0
+validators==0.35.0
     # via
     #   -c requirements.txt
     #   frictionless

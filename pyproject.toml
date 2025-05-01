@@ -16,6 +16,7 @@ dependencies = [
   "hdx-python-utilities",
   "arcgis>=2.0.0,<3.0.0",
   "dotenv",
+  "krb5",
 ]
 
 dynamic = ["version"]
