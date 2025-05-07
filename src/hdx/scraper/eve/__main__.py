@@ -66,6 +66,7 @@ def main(
             configuration = Configuration.read()
             eve = Eve(configuration, retriever, temp_dir, USERNAME, PASS)
             dataset = eve.generate_dataset()
+            dataset.preview_off()
             dataset.update_from_yaml(
                 path=join(dirname(__file__), "config", "hdx_dataset_static.yaml")
             )
