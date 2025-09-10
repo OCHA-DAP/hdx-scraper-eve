@@ -191,8 +191,6 @@ class TestEve:
                         "July 2024 (when available) to date.",
                         "p_coded": True,
                         "format": "csv",
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
@@ -201,8 +199,6 @@ class TestEve:
                         "format": "csv",
                         "name": "nga-flood-events-fao-eve.csv",
                         "p_coded": True,
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
@@ -211,8 +207,6 @@ class TestEve:
                         "format": "csv",
                         "name": "tha-flood-events-fao-eve.csv",
                         "p_coded": True,
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
                     },
                     {
                         "description": "Biweekly insights on flood events - their impacts on "
@@ -221,7 +215,5 @@ class TestEve:
                         "format": "csv",
                         "name": "yem-flood-events-fao-eve.csv",
                         "p_coded": True,
-                        "resource_type": "file.upload",
-                        "url_type": "upload",
                     },
                 ]
