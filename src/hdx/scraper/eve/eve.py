@@ -240,14 +240,12 @@ class Eve:
             "p_coded": True,
         }
 
-        dataset.generate_resource_from_iterable(
-            headers=list(data[0].keys()),
-            iterable=data,
-            hxltags=dataset_info["hxl_tags"],
+        dataset.generate_resource(
             folder=self._temp_dir,
             filename=resource_name,
+            rows=data,
             resourcedata=resource,
-            quickcharts=None,
+            headers=list(data[0].keys()),
             encoding="utf-8-sig",
         )
 
@@ -264,14 +262,12 @@ class Eve:
                 "description": resource_description,
                 "p_coded": True,
             }
-            dataset.generate_resource_from_iterable(
-                headers=list(records[0].keys()),
-                iterable=records,
-                hxltags=dataset_info["hxl_tags"],
+            dataset.generate_resource(
                 folder=self._temp_dir,
                 filename=resource_name,
+                rows=records,
                 resourcedata=resource,
-                quickcharts=None,
+                headers=list(records[0].keys()),
                 encoding="utf-8-sig",
             )
         return dataset
