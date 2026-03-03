@@ -122,10 +122,6 @@ class TestEve:
                             "name": "flooding",
                             "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
                         },
-                        {
-                            "name": "hxl",
-                            "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
-                        },
                     ],
                     "license_id": "cc-by",
                     "methodology": "[EVE user guide](https://data-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about)\n",
