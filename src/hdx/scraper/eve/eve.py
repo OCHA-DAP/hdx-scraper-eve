@@ -3,8 +3,7 @@
 
 import logging
 from collections import defaultdict
-from datetime import datetime, timezone
-from typing import List, Optional
+from datetime import UTC, datetime
 
 from arcgis.gis import GIS
 from hdx.api.configuration import Configuration
@@ -60,7 +59,7 @@ class Eve:
 
         return total_periods_since_start
 
-    def get_arcgis_data(self) -> List:
+    def get_arcgis_data(self) -> list:
         """
         Connect to ArcGIS to query the feature layer
         https://github.com/Andrampa/DIEM_API/blob/main/DIEM_API_get_EVE_data.ipynb
@@ -121,7 +120,7 @@ class Eve:
         results_list = [feature.attributes for feature in result.features]
         return results_list
 
-    def get_country_list(self, data: List) -> List[str]:
+    def get_country_list(self, data: list) -> list[str]:
         """
         Get a unique list of country names from the data.
         """
@@ -147,9 +146,9 @@ class Eve:
         start = record[
             "start_date"
         ]  # datetime.strptime(record["start_date"], "%Y-%m-%d").date()
-        end = datetime.fromtimestamp(
-            record["end_date"] / 1000, tz=timezone.utc
-        ).strftime("%Y-%m-%d")
+        end = datetime.fromtimestamp(record["end_date"] / 1000, tz=UTC).strftime(
+            "%Y-%m-%d"
+        )
         return start, end
 
     def reorder_dict(self, d: dict) -> dict:
@@ -169,7 +168,7 @@ class Eve:
 
         return new_dict
 
-    def process_data(self, data: List) -> List:
+    def process_data(self, data: list) -> list:
         """
         Process data by filtering out unwanted columns and sorting data
         """
@@ -195,7 +194,7 @@ class Eve:
         )
         return processed_data
 
-    def generate_dataset(self) -> Optional[Dataset]:
+    def generate_dataset(self) -> Dataset | None:
         """
         Generate dataset from the data.
         """
