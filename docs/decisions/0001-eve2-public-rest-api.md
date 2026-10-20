@@ -17,9 +17,11 @@ which has no musllinux wheel, so the Alpine Docker image could not be built.
 
 Query the three FeatureServer `query` endpoints with `Retrieve.download_json`, with no credentials.
 Paginate with an object-id keyset (`<oid> > last`, ordered by oid, `exceededTransferLimit` to stop),
-following `hdx-scraper-portwatch`. Retry error bodies returned with HTTP 200 three times. Validate
-each level's row count against `returnCountOnly`. Refresh the full history every run: FAO treats
-published dekads as immutable, and a full run is about 350 requests (about 7 minutes).
+following `hdx-scraper-portwatch`. Retry error bodies returned with HTTP 200 three times. Get each
+level's row count and maximum oid in one `outStatistics` query, page only up to that oid, and validate
+the row count, so rows FAO appends mid-run are excluded. Levels are fetched minutes apart, so dekads
+later than the latest dekad common to all levels are dropped. Refresh the full history every run:
+FAO treats published dekads as immutable, and a full run is about 350 requests (about 7 minutes).
 
 ## Consequences
 

@@ -27,16 +27,19 @@ pcode_exclude:
   adm1: [BDI, BFA, CAF, MDG, MLI, MMR, VNM]
   adm2: [BDI, BFA, CAF, HTI, MDG, MLI, MMR]
 # Names that fail to match or fuzzy match incorrectly eg. CMR "Ouest" fuzzy matches "East"
+# Separate per level as AdminLevel raises KeyError on a p-code from another level
 admin_name_mappings:
-  "BGD|Chittagong": "BD20"
-  "BD20|Chittagong": "BD2015"
-  "CMR|Est": "CM003"
-  "CMR|Extrême-Nord": "CM004"
-  "CMR|Ouest": "CM008"
-  "CMR|Sud": "CM009"
-  "CMR|Sud-Ouest": "CM010"
-  "HTI|Sud": "HT07"
-  "PHL|Samar": "PH08060"
+  adm1:
+    "BGD|Chittagong": "BD20"
+    "CMR|Est": "CM003"
+    "CMR|Extrême-Nord": "CM004"
+    "CMR|Ouest": "CM008"
+    "CMR|Sud": "CM009"
+    "CMR|Sud-Ouest": "CM010"
+    "HTI|Sud": "HT07"
+  adm2:
+    "BD20|Chittagong": "BD2015"
+    "PHL|Samar": "PH08060"
 # Maguindanao split into PH19087 Maguindanao del Norte and PH19088 Maguindanao del Sur
 admin_fuzzy_dont:
   - "PHL|maguindanao"

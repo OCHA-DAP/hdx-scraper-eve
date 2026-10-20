@@ -1,1 +1,1 @@
-{"count":948}
+{"objectIdFieldName":"ObjectId","uniqueIdField":{"name":"ObjectId","isSystemMaintained":true},"globalIdFieldName":"","fields":[{"name":"count","type":"esriFieldTypeInteger","alias":"count","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"max","type":"esriFieldTypeOID","alias":"max","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null}],"features":[{"attributes":{"count":948,"max":554858}}]}

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 """EVE scraper"""
 
+import json
 import logging
 import time
 
@@ -41,7 +42,9 @@ class Pipeline:
 
     def get_level_data(self, level: str) -> list[dict]:
         """Get all rows of an EVE admin level table using keyset pagination on
-        the object id field. Validates the row count against the server count.
+        the object id field up to the maximum object id at the time of the count
+        query, so rows appended during the run are excluded. Validates the row
+        count against the server count.
 
         Args:
             level: adm0, adm1 or adm2
@@ -55,12 +58,25 @@ class Pipeline:
         oid_field = level_info["oid_field"]
         page_size = level_info["page_size"]
 
+        statistics = [
+            {
+                "statisticType": statistic_type,
+                "onStatisticField": oid_field,
+                "outStatisticFieldName": statistic_type,
+            }
+            for statistic_type in ("count", "max")
+        ]
         data = self._download_json(
             url,
-            {"where": where, "returnCountOnly": "true", "f": "json"},
+            {"where": where, "outStatistics": json.dumps(statistics), "f": "json"},
             f"eve_{level}_count.json",
         )
-        expected_count = data["count"]
+        attributes = data["features"][0]["attributes"]
+        expected_count = attributes["count"]
+        if expected_count == 0:
+            logger.warning(f"{level}: no rows")
+            return []
+        max_oid = attributes["max"]
 
         drop_fields = set(self._configuration["drop_fields"])
         drop_fields.add(oid_field)
@@ -68,7 +84,7 @@ class Pipeline:
         last_oid = 0
         while True:
             params = {
-                "where": f"({where}) AND {oid_field}>{last_oid}",
+                "where": f"({where}) AND {oid_field}>{last_oid} AND {oid_field}<={max_oid}",
                 "outFields": "*",
                 "returnGeometry": "false",
                 "orderByFields": oid_field,
@@ -111,8 +127,9 @@ class Pipeline:
         return rows
 
     def add_pcodes(self, level_data: dict[str, list[dict]]) -> None:
-        """Add admin1_pcode and admin2_pcode columns after the GAUL name columns
-        by matching GAUL names to the HDX global p-codes dataset.
+        """Add admin1_pcode and admin2_pcode values to the rows by matching GAUL
+        names to the HDX global p-codes dataset. _get_headers places them after
+        the GAUL name columns.
 
         Args:
             level_data: Rows by admin level
@@ -121,17 +138,27 @@ class Pipeline:
             None
         """
         countryiso3s = sorted({row["iso3_code"] for row in level_data["adm0"]})
-        admin_config = {
-            "admin_name_mappings": self._configuration["admin_name_mappings"],
-            "admin_fuzzy_dont": self._configuration["admin_fuzzy_dont"],
-        }
+        admin_name_mappings = self._configuration["admin_name_mappings"]
+        admin_fuzzy_dont = self._configuration["admin_fuzzy_dont"]
         _, iterator = self._retriever.get_tabular_rows(
             AdminLevel.admin_url, dict_form=True
         )
         pcode_rows = list(iterator)
-        admin1 = AdminLevel(admin_config, admin_level=1)
+        admin1 = AdminLevel(
+            {
+                "admin_name_mappings": admin_name_mappings["adm1"],
+                "admin_fuzzy_dont": admin_fuzzy_dont,
+            },
+            admin_level=1,
+        )
         admin1.setup_from_iterable(pcode_rows, countryiso3s)
-        admin2 = AdminLevel(admin_config, admin_level=2)
+        admin2 = AdminLevel(
+            {
+                "admin_name_mappings": admin_name_mappings["adm2"],
+                "admin_fuzzy_dont": admin_fuzzy_dont,
+            },
+            admin_level=2,
+        )
         admin2.setup_from_iterable(pcode_rows, countryiso3s)
         admin2.set_parent_admins_from_adminlevels([admin1])
         exclude = self._configuration["pcode_exclude"]
@@ -154,11 +181,14 @@ class Pipeline:
                 gaul2_code = row["gaul2_code"]
                 if gaul2_code not in gaul2_to_pcode:
                     pcode = None
-                    if iso3 not in exclude["adm2"]:
+                    parent = gaul1_to_pcode[gaul1_code]
+                    # Without a parent, AdminLevel matches against all ADM2s in the
+                    # country, so a unit could get a p-code under another ADM1
+                    if parent and iso3 not in exclude["adm2"]:
                         pcode, _ = admin2.get_pcode(
                             iso3,
                             row["gaul2_name"],
-                            parent=gaul1_to_pcode[gaul1_code],
+                            parent=parent,
                             logname="EVE",
                         )
                     gaul2_to_pcode[gaul2_code] = pcode
@@ -167,15 +197,23 @@ class Pipeline:
         admin2.output_errors()
 
         for level in ("adm1", "adm2"):
-            for i, row in enumerate(level_data[level]):
-                new_row = {}
-                for key, value in row.items():
-                    new_row[key] = value
-                    if key == "gaul1_name":
-                        new_row["admin1_pcode"] = gaul1_to_pcode[row["gaul1_code"]]
-                    elif key == "gaul2_name":
-                        new_row["admin2_pcode"] = gaul2_to_pcode[row["gaul2_code"]]
-                level_data[level][i] = new_row
+            for row in level_data[level]:
+                row["admin1_pcode"] = gaul1_to_pcode[row["gaul1_code"]]
+                if level == "adm2":
+                    row["admin2_pcode"] = gaul2_to_pcode[row["gaul2_code"]]
+
+    @staticmethod
+    def _get_headers(row: dict) -> list[str]:
+        headers = []
+        for key in row:
+            if key in ("admin1_pcode", "admin2_pcode"):
+                continue
+            headers.append(key)
+            if key == "gaul1_name":
+                headers.append("admin1_pcode")
+            elif key == "gaul2_name":
+                headers.append("admin2_pcode")
+        return headers
 
     def _generate_resource(
         self, dataset: Dataset, rows: list[dict], level: str, iso3: str | None
@@ -205,14 +243,25 @@ class Pipeline:
             filename=filename,
             rows=rows,
             resourcedata=resourcedata,
-            headers=list(rows[0].keys()),
+            headers=self._get_headers(rows[0]),
         )
 
     def generate_dataset(self) -> Dataset | None:
         level_data = {level: self.get_level_data(level) for level in _LEVELS}
-        if not level_data["adm0"]:
-            logger.warning("No EVE data found")
-            return None
+        for level in _LEVELS:
+            if not level_data[level]:
+                logger.error(f"No EVE {level} data found")
+                return None
+        # Levels are fetched at different times so FAO may have added a dekad to
+        # some levels only. Rows are sorted latest dekad first.
+        latest_dekad = min(level_data[level][0]["dekad_start"] for level in _LEVELS)
+        for level in _LEVELS:
+            rows = level_data[level]
+            if rows[0]["dekad_start"] > latest_dekad:
+                level_data[level] = [
+                    row for row in rows if row["dekad_start"] <= latest_dekad
+                ]
+                logger.warning(f"{level}: dropped dekads after {latest_dekad}")
         self.add_pcodes(level_data)
 
         configuration = self._configuration

@@ -184,7 +184,39 @@ class TestPipeline:
 
     def test_count_mismatch(self, configuration):
         row = {"OBJECTID": 1, "iso3_code": "MOZ", "dekad_start": "2026-10-01"}
-        retriever = FakeRetriever([{"count": 2}, {"features": [{"attributes": row}]}])
+        count = {"features": [{"attributes": {"count": 2, "max": 2}}]}
+        retriever = FakeRetriever([count, {"features": [{"attributes": row}]}])
         pipeline = Pipeline(configuration, retriever, "")
         with pytest.raises(ValueError, match="retrieved 1 rows but server reports 2"):
             pipeline.get_level_data("adm0")
+
+    def test_level_consistency(self, configuration, monkeypatch):
+        def rows(*dekads):
+            return [
+                {"iso3_code": "MOZ", "dekad_start": dekad, "dekad_end": dekad}
+                for dekad in dekads
+            ]
+
+        level_data = {
+            "adm0": rows("2026-10-11", "2026-10-01"),
+            "adm1": rows("2026-10-11", "2026-10-01"),
+            "adm2": rows("2026-10-01"),
+        }
+        resources = {}
+        pipeline = Pipeline(configuration, None, "")
+        monkeypatch.setattr(pipeline, "get_level_data", lambda level: level_data[level])
+        monkeypatch.setattr(pipeline, "add_pcodes", lambda _: None)
+        monkeypatch.setattr(
+            pipeline_module.Dataset, "add_country_locations", lambda *_: None
+        )
+        monkeypatch.setattr(
+            pipeline,
+            "_generate_resource",
+            lambda _, rows, level, iso3: resources.setdefault(level, rows),
+        )
+        pipeline.generate_dataset()
+        for level in ("adm0", "adm1", "adm2"):
+            assert [row["dekad_start"] for row in resources[level]] == ["2026-10-01"]
+
+        level_data["adm2"] = []
+        assert pipeline.generate_dataset() is None
