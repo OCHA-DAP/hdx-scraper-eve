@@ -16,9 +16,6 @@ dependencies = [
   "hdx-python-api",
   "hdx-python-country",
   "hdx-python-utilities",
-  "arcgis",
-  "dotenv",
-  "krb5",
 ]
 readme = "README.md"
 
