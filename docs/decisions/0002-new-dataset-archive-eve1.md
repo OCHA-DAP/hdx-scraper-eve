@@ -12,6 +12,7 @@ EVE 2.0 changes the schema: dekads, GAUL codes, and exceptional/seasonal/total s
 cropland, population and six livestock species. It also adds ADM0 and ADM1 tables. None of the
 old resources have TDE (`datastore_active: False`). Overwriting in place with
 `remove_additional_resources=True` would delete the EVE 1.0 history.
+FAO agreed (2026-10-23) to retire EVE 1.0.
 
 ## Decision
 
@@ -28,3 +29,5 @@ Archive the old dataset by hand in the HDX UI after the first successful prod ru
 - Links to the old dataset URL don't redirect to the new one.
 - The global ADM2 CSV is 91 MB (319,554 rows as of 2026-10-20) and grows about 68 MB a year. At that
   rate it reaches the 300 MB HDX resource limit in about 3 years.
+- FAO is considering back-processing EVE 2.0 over the EVE 1.0 period (from 2024-01). That would
+  bring the 300 MB limit closer.

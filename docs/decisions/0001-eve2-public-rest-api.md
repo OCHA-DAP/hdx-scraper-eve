@@ -20,8 +20,9 @@ Paginate with an object-id keyset (`<oid> > last`, ordered by oid, `exceededTran
 following `hdx-scraper-portwatch`. Retry error bodies returned with HTTP 200 three times. Get each
 level's row count and maximum oid in one `outStatistics` query, page only up to that oid, and validate
 the row count, so rows FAO appends mid-run are excluded. Levels are fetched minutes apart, so dekads
-later than the latest dekad common to all levels are dropped. Refresh the full history every run:
-FAO treats published dekads as immutable, and a full run is about 350 requests (about 7 minutes).
+later than the latest dekad common to all levels are dropped. Refresh the full history every run.
+FAO may change the 25% seasonal threshold and reprocess the archive, and asked (2026-10-23) for a
+full dump and replace at each update. A full run is about 350 requests (about 7 minutes).
 
 ## Consequences
 

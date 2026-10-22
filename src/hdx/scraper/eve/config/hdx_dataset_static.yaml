@@ -1,13 +1,15 @@
 license_id: cc-by
 methodology: Other
 methodology_other: |
-  EVE detects flooding from NOAA VIIRS 5-day flood composites aggregated to dekads (10-day periods), compares it with the VISTA historical flood-frequency reference to separate seasonal from exceptional flooding, and overlays exposure layers: ESA WorldCover cropland, WorldPop 2020 population and FAO Gridded Livestock of the World 2020. Statistics are computed for FAO GAUL 2024 ADM2 units and summed to ADM1 and ADM0; percentages are recomputed at each level. See the [EVE Data Product Documentation](https://diem-eve.apps.fao.org/manuals/eve_data_manual.md).
+  EVE detects flooding from NOAA VIIRS 5-day flood composites aggregated to dekads (10-day periods), compares it with the VISTA historical flood-frequency reference to separate seasonal from exceptional flooding (a flooded pixel is seasonal if VISTA shows it flooded in at least 25% of valid historical observations at the same time of year, otherwise exceptional), and overlays exposure layers: ESA WorldCover cropland, WorldPop 2020 population and FAO Gridded Livestock of the World 2020. Statistics are computed for FAO GAUL 2024 ADM2 units and summed to ADM1 and ADM0; percentages are recomputed at each level. See the [EVE Data Reference](https://diem-eve.apps.fao.org/data-manual) for the methodology, the flood anomaly concept, and all fields, units and naming conventions.
 
   HDX adds admin1_pcode and admin2_pcode columns by matching GAUL names to the [Global P-Codes](https://data.humdata.org/dataset/global-pcodes) dataset (latest COD version per country at the time of each run). P-codes are left blank where no match is found, where no COD exists (Tanzania, and Viet Nam ADM2), and in countries whose GAUL and COD admin structures differ (ADM1: Burundi, Burkina Faso, Central African Republic, Madagascar, Mali, Myanmar, Viet Nam; ADM2: the same less Viet Nam, plus Haiti).
 caveats: |
   Satellite flood detection may miss flooding under persistent cloud (VIIRS is optical), short-duration or flash floods, and urban floods, and may give false positives in coastal zones, marshlands, riverbanks, rice fields and wet soils. Check the cloud fields: a unit mostly under cloud may show 0 flood.
 
   A value of 0 is also used when an input or denominator is unavailable, so 0 is not proof that no flooding occurred. Flooded cropland does not indicate crop loss, and livestock figures are modelled and do not capture seasonal movements. ADM1 and ADM0 percentages are computed from summed ADM2 values, not averaged.
+
+  The 25% seasonal threshold is a global methodological choice that FAO and the JRC are reviewing, as with 25% "too many waters are classified as seasonal even when they probably are not". A new threshold, and any reprocessing of the archive, would change past values. Each update replaces the full history.
 
   GAUL codes and names are the primary admin identifiers; p-codes are name-matched by HDX and may contain errors. The boundaries and names used do not imply the expression of any opinion whatsoever on the part of FAO concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers and boundaries.
 dataset_source: Food and Agriculture Organization (FAO) Data in Emergencies (DIEM)
@@ -16,7 +18,9 @@ private: False
 maintainer: 169c44fe-3043-4616-8719-59cf9f101270 # andreampa
 owner_org: ed727a5b-3e6e-4cd6-b97e-4a71532085e6 # fao
 data_update_frequency: 14
+customviz:
+  - url: https://diem-eve.apps.fao.org/?embed=1&region=africa
 notes: |
-  This dataset contains flood exposure estimates from the FAO Data in Emergencies (DIEM) Events Visualization in Emergencies (EVE) system for each dekad (10-day period). For each country, first-level (ADM1) and second-level (ADM2) administrative unit, it gives the flooded area, flooded cropland, population and livestock (buffalo, cattle, chicken, goats, pigs and sheep) in flooded areas, as absolute values and percentages, split into exceptional flooding, seasonal flooding (flooding normally expected at that time of year) and total.
+  This dataset contains flood exposure estimates from the FAO Data in Emergencies (DIEM) Events Visualization in Emergencies (EVE) system for each dekad (10-day period). It is updated after each dekad (1st, 11th and 21st of each month). For each country, first-level (ADM1) and second-level (ADM2) administrative unit, it gives the flooded area, flooded cropland, population and livestock (buffalo, cattle, chicken, goats, pigs and sheep) in flooded areas, as absolute values and percentages, split into exceptional flooding, seasonal flooding (flooding normally expected at that time of year) and total.
 
   EVE products are preliminary analyses that have not undergone field validation. Explore the data on the [EVE dashboard](https://diem-eve.apps.fao.org/) and send feedback to the [FAO DIEM team](https://data-in-emergencies.fao.org/pages/contactus).
