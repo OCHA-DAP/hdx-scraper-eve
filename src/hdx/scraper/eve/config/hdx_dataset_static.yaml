@@ -1,23 +1,26 @@
 license_id: cc-by
-methodology: |
-  [EVE user guide](https://data-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about)
+methodology: Other
+methodology_other: |
+  EVE detects flooding from NOAA VIIRS 5-day flood composites aggregated to dekads (10-day periods), compares it with the VISTA historical flood-frequency reference to separate seasonal from exceptional flooding (a flooded pixel is seasonal if VISTA shows it flooded in at least 25% of valid historical observations at the same time of year, otherwise exceptional), and overlays exposure layers: ESA WorldCover cropland, WorldPop 2020 population and FAO Gridded Livestock of the World 2020. Statistics are computed for FAO GAUL 2024 ADM2 units and summed to ADM1 and ADM0; percentages are recomputed at each level. See the [EVE Data Reference](https://diem-eve.apps.fao.org/data-manual) for the methodology, the flood anomaly concept, and all fields, units and naming conventions.
+
+  HDX adds admin1_pcode and admin2_pcode columns by matching GAUL names to the [Global P-Codes](https://data.humdata.org/dataset/global-pcodes) dataset (latest COD version per country at the time of each run). P-codes are left blank where no match is found, where no COD exists (Tanzania, and Viet Nam ADM2), and in countries whose GAUL and COD admin structures differ (ADM1: Burundi, Burkina Faso, Central African Republic, Madagascar, Mali, Myanmar, Viet Nam; ADM2: the same less Viet Nam, plus Haiti).
 caveats: |
-  EVE analyses are based on global datasets to ensure broad coverage, rapid scalability, and integration into international humanitarian workflows. However, these datasets cannot always capture national or local specificities that would enhance analytical precision.
+  Satellite flood detection may miss flooding under persistent cloud (VIIRS is optical), short-duration or flash floods, and urban floods, and may give false positives in coastal zones, marshlands, riverbanks, rice fields and wet soils. Check the cloud fields: a unit mostly under cloud may show 0 flood.
 
-  While EVE can estimate the extent of flooded cropland, it does not determine whether the affected cropland was actively cultivated at the time of the flood.
+  A value of 0 is also used when an input or denominator is unavailable, so 0 is not proof that no flooding occurred. Flooded cropland does not indicate crop loss, and livestock figures are modelled and do not capture seasonal movements. ADM1 and ADM0 percentages are computed from summed ADM2 values, not averaged.
 
-  EVE does not inherently differentiate between hazardous and non-hazardous floods, which can lead to false detections in agricultural regions. Some flood events result from regular seasonal patterns or controlled agricultural activities, such as rice paddy planting or aquaculture, rather than actual hazard-related floods.
-dataset_source: Food and Agriculture Organization (FAO)
+  The 25% seasonal threshold is a global methodological choice that FAO and the JRC are reviewing, as with 25% "too many waters are classified as seasonal even when they probably are not". A new threshold, and any reprocessing of the archive, would change past values. Each update replaces the full history.
+
+  GAUL codes and names are the primary admin identifiers; p-codes are name-matched by HDX and may contain errors. The boundaries and names used do not imply the expression of any opinion whatsoever on the part of FAO concerning the legal status of any country, territory, city or area or of its authorities, or concerning the delimitation of its frontiers and boundaries.
+dataset_source: Food and Agriculture Organization (FAO) Data in Emergencies (DIEM)
 package_creator: HDX Data Systems Team
 private: False
 maintainer: 169c44fe-3043-4616-8719-59cf9f101270 # andreampa
-owner_org:  ed727a5b-3e6e-4cd6-b97e-4a71532085e6 # fao
+owner_org: ed727a5b-3e6e-4cd6-b97e-4a71532085e6 # fao
 data_update_frequency: 14
+customviz:
+  - url: https://diem-eve.apps.fao.org/?embed=1&region=africa
 notes: |
-  The DIEM Events Visualization in Emergencies (EVE) system provides resources to enhance the understanding of flood events and their impact on different land cover types, with a particular focus on agricultural areas. EVE provides a flood persistence analysis as well as an estimation of the population exposed to such events.
+  This dataset contains flood exposure estimates from the FAO Data in Emergencies (DIEM) Events Visualization in Emergencies (EVE) system for each dekad (10-day period). It is updated after each dekad (1st, 11th and 21st of each month). For each country, first-level (ADM1) and second-level (ADM2) administrative unit, it gives the flooded area, flooded cropland, population and livestock (buffalo, cattle, chicken, goats, pigs and sheep) in flooded areas, as absolute values and percentages, split into exceptional flooding, seasonal flooding (flooding normally expected at that time of year) and total.
 
-  EVE utilizes satellite-derived data from the NOAA Visible Infrared Imaging Radiometer Suite (VIIRS) at a 375-meter resolution, alongside land cover data from the European Space Agency’s WorldCover 10m 2021 dataset. Covering approximately 40 countries, the system offers daily and biweekly insights, providing a continuously updated view of flood dynamics and their effects. Access the [FAO EVE user guide](https://data-in-emergencies.fao.org/documents/3335ee769a4e45708e27d2ee25d13bef/about) to learn more.
-
-  The platform presents results through interactive maps, charts, and tables, supporting decision-making in disaster management, agricultural planning, and environmental monitoring. Most resources are publicly accessible, though downloading aggregated data at the admin2 level requires a [DIEM account](https://hqfao.maps.arcgis.com/sharing/rest/oauth2/signup?client_id=aEXLMtXxljlIrgPN&response_type=token&expiration=20160&showSocialLogins=true&locale=en-us&redirect_uri=https%3A%2F%2Fdata-in-emergencies.fao.org%2Ftorii-provider-arcgis%2Fhub-redirect.html).
-
-  EVE products are preliminary analyses and have not yet undergone field validation. Users are encouraged to provide ground feedback to the [FAO Data in Emergencies (DIEM) team](https://data-in-emergencies.fao.org/pages/contactus) to enhance the accuracy and utility of the data.
+  EVE products are preliminary analyses that have not undergone field validation. Explore the data on the [EVE dashboard](https://diem-eve.apps.fao.org/) and send feedback to the [FAO DIEM team](https://data-in-emergencies.fao.org/pages/contactus).

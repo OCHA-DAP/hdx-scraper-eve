@@ -1,13 +1,61 @@
 # Collector specific configuration
-base_url: "https://hqfao-hub.maps.arcgis.com"
-feature_table_id: "98265cbe82e344f88552d4c2d3615c3c"
+base_url: "https://services5.arcgis.com/sjP4Ugu5s0dZWLjd/arcgis/rest/services"
+where: "1=1"
 
-description: Biweekly insights on flood events - their impacts on population and various land cover types - for (country) from 1 July 2024 (when available) to date.
-title: FAO EVE Global Flood Monitoring System
-resource_title: Flood Events FAO EVE
+# Page size is each service's maxRecordCount
+levels:
+  adm0:
+    table: "eve_mastertable_adm0/FeatureServer/6"
+    oid_field: "OBJECTID"
+    page_size: 2000
+  adm1:
+    table: "eve_mastertable_adm1/FeatureServer/7"
+    oid_field: "OBJECTID"
+    page_size: 2000
+  adm2:
+    table: "eve_mastertable_2/FeatureServer/0"
+    oid_field: "ObjectId"
+    page_size: 1000
+
+# disp_en is undocumented and its ADM1 values are ADM2 labels eg. "Ab Band, Ghazni, Afghanistan"
+drop_fields:
+  - disp_en
+
+# GAUL 2024 and COD admin structures diverge in these countries so name matching gives wrong
+# p-codes eg. BDI GAUL has 18 ADM1 vs 5 in COD and "Mugamba" fuzzy matches "Makamba"
+pcode_exclude:
+  adm1: [BDI, BFA, CAF, MDG, MLI, MMR, VNM]
+  adm2: [BDI, BFA, CAF, HTI, MDG, MLI, MMR]
+# Names that fail to match or fuzzy match incorrectly eg. CMR "Ouest" fuzzy matches "East"
+# Separate per level as AdminLevel raises KeyError on a p-code from another level
+admin_name_mappings:
+  adm1:
+    "BGD|Chittagong": "BD20"
+    "CMR|Est": "CM003"
+    "CMR|Extrême-Nord": "CM004"
+    "CMR|Ouest": "CM008"
+    "CMR|Sud": "CM009"
+    "CMR|Sud-Ouest": "CM010"
+    "HTI|Sud": "HT07"
+  adm2:
+    "BD20|Chittagong": "BD2015"
+    "PHL|Samar": "PH08060"
+# Maguindanao split into PH19087 Maguindanao del Norte and PH19088 Maguindanao del Sur
+admin_fuzzy_dont:
+  - "PHL|maguindanao"
+
+dataset_name: "fao-eve-flood-exposure"
+dataset_title: "FAO EVE Flood Exposure"
+resource_filename: "{location}_fao_eve_flood_exposure_{level}.csv"
+resource_description: "Dekadal (10-day) flood exposure estimates - flooded area, cropland, population and livestock, split into exceptional and seasonal flooding - aggregated to {level_desc} for {location_desc}."
+level_descriptions:
+  adm0: "country (ADM0) level"
+  adm1: "first-level administrative (ADM1) units, with FAO GAUL codes and, where matched, COD p-codes,"
+  adm2: "second-level administrative (ADM2) units, with FAO GAUL codes and, where matched, COD p-codes,"
 
 tags:
   - affected area
   - affected population
+  - agriculture-livestock
   - climate hazards
   - flooding

@@ -4,10 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Publishes the HDX dataset `fao-eve-global-flood-monitoring-system` from FAO DIEM's EVE (Events
-Visualization in Emergencies) flood feature table on ArcGIS Online. Produces one global CSV
-resource plus one CSV resource per country. Requires DIEM account credentials (`DIEM_USERNAME`,
-`DIEM_PASSWORD`, read from a local `.env` file or the environment).
+Publishes the HDX dataset `fao-eve-flood-exposure` from FAO DIEM's EVE 2.0 flood exposure tables,
+read from three public ArcGIS FeatureServers (ADM0, ADM1 and ADM2 by dekad, keyed by FAO GAUL 2024
+codes). The output is one dataset with `global_fao_eve_flood_exposure_{adm0,adm1,adm2}.csv` plus
+one `<iso3>_fao_eve_flood_exposure_adm2.csv` per country. HDX adds `admin1_pcode`/`admin2_pcode`
+columns by name-matching GAUL units to COD p-codes. The EVE 1.0 dataset
+`fao-eve-global-flood-monitoring-system` is archived. See `docs/decisions/` 0001-0003.
 
 ## Commands
 
@@ -56,14 +58,24 @@ automatically on commit).
 
 ## Architecture
 
-- `__main__.py` — loads DIEM credentials, builds the `Retrieve`, calls `Eve.generate_dataset()`,
-  merges `config/hdx_dataset_static.yaml` and calls `create_in_hdx`.
-- `eve.py` — `Eve` class: logs in to AGOL with the `arcgis` SDK (`get_arcgis_data`), renames and
-  drops columns (`process_data`), and builds the dataset with global and per-country resources
-  (`generate_dataset`).
-- `config/project_configuration.yaml` — AGOL base URL, feature table id, title/description/tag
-  strings.
-- `tests/test_eve.py` — monkeypatches `get_arcgis_data` to read `tests/fixtures/input/filtered-data.json`.
+- `__main__.py`: standard copier orchestration: builds the `Retrieve`, calls
+  `Pipeline.generate_dataset()`, merges `config/hdx_dataset_static.yaml` and calls `create_in_hdx`.
+- `pipeline.py` (`Pipeline`):
+  - `get_level_data(level)`: count query, then object-id keyset pagination with retries on ArcGIS
+    error bodies. Drops the oid and `disp_en` fields, validates the row count, and sorts latest
+    dekad first.
+  - `add_pcodes(level_data)`: loads the global p-codes CSV once and sets up `AdminLevel` for
+    ADM1/ADM2 (ADM2 parent-constrained). Matches each GAUL unit once and inserts the p-code columns.
+    Countries in `pcode_exclude` are skipped.
+  - `generate_dataset()`: builds the dataset and resources. `p_coded` is set on a resource only if
+    it has p-codes.
+- `config/project_configuration.yaml`: base URL, per-level table/oid field/page size, `where`
+  filter, `pcode_exclude`, `admin_name_mappings`, `admin_fuzzy_dont`, and dataset/resource names,
+  descriptions and tags.
+- `tests/`: `conftest.py` narrows `where` to MMR/MOZ/NGA for October 2026 and sets the ADM2 page
+  size to 500. `test_pipeline.py` replays `tests/fixtures/input/` (raw ArcGIS responses and the
+  global p-codes CSV) and compares output CSVs with `tests/fixtures/*.csv`. To recapture fixtures,
+  rerun the same queries with `curl` (or `Retrieve(save=True)`) using the conftest overrides.
 
 ## Code Style
 
