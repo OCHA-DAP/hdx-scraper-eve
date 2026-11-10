@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-eve/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-eve?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script downloads subsets of the EVE (Events Visualization in Emergencies) feature table hosted on ArcGIS Online (AGOL). It creates 1 dataset with 1 global resource and 1 resource per country and will run every 14 days. DIEM account credentials are stored in a .env file in the root directory and are needed to run this script. The credentials are stored in LastPass.
+This script downloads the EVE (Events Visualization in Emergencies) 2.0 flood exposure tables published by FAO Data in Emergencies (DIEM) on public ArcGIS FeatureServers (ADM0, ADM1 and ADM2, by dekad) and creates the HDX dataset [fao-eve-flood-exposure](https://data.humdata.org/dataset/fao-eve-flood-exposure). The dataset has one global CSV per admin level and one ADM2 CSV per country. GAUL admin names are matched to COD p-codes (see `docs/decisions/0003-gaul-to-pcode-matching.md`). No source credentials are needed. It runs after each dekad's publication on days 1, 2, 11, 12, 21 and 22 of each month.
 
 ## Development
 

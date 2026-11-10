@@ -6,85 +6,82 @@ script then creates in HDX.
 """
 
 import logging
-import os
-from os.path import dirname, expanduser, join
+from os.path import expanduser, join
 
-from dotenv import load_dotenv
 from hdx.api.configuration import Configuration
+from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import (
+    script_dir_plus_file,
     wheretostart_tempdir_batch,
 )
 from hdx.utilities.retriever import Retrieve
 
-from hdx.scraper.eve.eve import Eve
+from hdx.scraper.eve._version import __version__
+from hdx.scraper.eve.pipeline import Pipeline
 
 logger = logging.getLogger(__name__)
 
-_USER_AGENT_LOOKUP = "hdx-scraper-eve"
+_LOOKUP = "hdx-scraper-eve"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: eve"
 
-# Load local .env file if not running in GitHub Actions
-if os.getenv("GITHUB_ACTIONS") is None:
-    load_dotenv()
-
-USERNAME = os.getenv("DIEM_USERNAME")
-PASS = os.getenv("DIEM_PASSWORD")
-if not USERNAME or not PASS:
-    logger.error("DIEM_USERNAME or DIEM_PASSWORD environment variables are missing.")
-
 
 def main(
-    save: bool = True,
+    save: bool = False,
     use_saved: bool = False,
 ) -> None:
     """Generate datasets and create them in HDX
 
     Args:
-        save (bool): Save downloaded data. Defaults to True.
-        use_saved (bool): Use saved data. Defaults to False.
+        save: Save downloaded data. Defaults to False.
+        use_saved: Use saved data. Defaults to False.
 
     Returns:
         None
     """
-    with wheretostart_tempdir_batch(folder=_USER_AGENT_LOOKUP) as info:
-        temp_dir = info["folder"]
+    logger.info(f"##### {_LOOKUP} version {__version__} ####")
+    configuration = Configuration.read()
+    User.check_current_user_write_access("ed727a5b-3e6e-4cd6-b97e-4a71532085e6")
+
+    with wheretostart_tempdir_batch(folder=_LOOKUP) as info:
+        tempdir = info["folder"]
         with Download() as downloader:
             retriever = Retrieve(
                 downloader=downloader,
-                fallback_dir=temp_dir,
+                fallback_dir=tempdir,
                 saved_dir=_SAVED_DATA_DIR,
-                temp_dir=temp_dir,
+                temp_dir=tempdir,
                 save=save,
                 use_saved=use_saved,
             )
+            pipeline = Pipeline(configuration, retriever, tempdir)
             #
             # Steps to generate dataset
             #
-            configuration = Configuration.read()
-            eve = Eve(configuration, retriever, temp_dir, USERNAME, PASS)
-            dataset = eve.generate_dataset()
-            dataset.preview_off()
-            dataset.update_from_yaml(
-                path=join(dirname(__file__), "config", "hdx_dataset_static.yaml")
-            )
-            dataset.create_in_hdx(
-                remove_additional_resources=True,
-                match_resource_order=False,
-                updated_by_script=_UPDATED_BY_SCRIPT,
-                batch=info["batch"],
-            )
+            dataset = pipeline.generate_dataset()
+            if dataset:
+                dataset.update_from_yaml(
+                    script_dir_plus_file(
+                        join("config", "hdx_dataset_static.yaml"), main
+                    )
+                )
+                dataset.create_in_hdx(
+                    remove_additional_resources=True,
+                    match_resource_order=False,
+                    updated_by_script=_UPDATED_BY_SCRIPT,
+                    batch=info["batch"],
+                )
 
 
 if __name__ == "__main__":
     facade(
         main,
-        # hdx_site="demo",
+        # hdx_site="stage",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
-        user_agent_lookup=_USER_AGENT_LOOKUP,
-        project_config_yaml=join(
-            dirname(__file__), "config", "project_configuration.yaml"
+        user_agent_lookup=_LOOKUP,
+        project_config_yaml=script_dir_plus_file(
+            join("config", "project_configuration.yaml"), main
         ),
     )

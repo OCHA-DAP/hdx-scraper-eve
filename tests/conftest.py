@@ -31,28 +31,33 @@ def configuration(config_dir):
         hdx_site="prod",
         project_config_yaml=join(config_dir, "project_configuration.yaml"),
     )
-    # Change locations below to match those needed in tests
+    configuration = Configuration.read()
+    # Restrict fixtures to 1 dekad for 2 countries plus MMR, which is excluded from
+    # p-code matching. ADM2 page size is reduced so that pagination is exercised.
+    configuration["where"] = (
+        "iso3_code IN ('MMR','MOZ','NGA') AND dekad_year=2026 AND dekad_month=10"
+    )
+    configuration["levels"]["adm2"]["page_size"] = 500
     Locations.set_validlocations(
         [
+            {"name": "mmr", "title": "Myanmar"},
+            {"name": "moz", "title": "Mozambique"},
             {"name": "nga", "title": "Nigeria"},
-            {"name": "tha", "title": "Thailand"},
-            {"name": "yem", "title": "Yemen"},
             {"name": "world", "title": "World"},
         ]
     )
     Country.countriesdata(False)
+    tags = (
+        "affected area",
+        "affected population",
+        "agriculture-livestock",
+        "climate hazards",
+        "flooding",
+    )
+    Vocabulary._tags_dict = {tag: {"Action to Take": "ok"} for tag in tags}
     Vocabulary._approved_vocabulary = {
-        "tags": [
-            {"name": tag}
-            # Change tags below to match those needed in tests
-            for tag in (
-                "affected area",
-                "affected population",
-                "climate hazards",
-                "flooding",
-            )
-        ],
+        "tags": [{"name": tag} for tag in tags],
         "id": "b891512e-9516-4bf5-962a-7a289772a2a1",
         "name": "approved",
     }
-    return Configuration.read()
+    return configuration
